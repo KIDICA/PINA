@@ -1,0 +1,37 @@
+﻿h1, h2, h3, h4, h5, label {
+  color: #FFFFFF;
+}
+
+h1 {
+  letter-spacing: 0.25em;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+h1 img.logo{
+  height: 1em;
+  padding-right: 0.25em;
+}
+
+.btn-primary {
+  background-color: #AE0055;
+  border-color: #AE0055;
+}
+
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle{
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #AE0055;
+}
+
+.btn-primary.focus, .btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem #FFFFFF;
+}
+
+.col-centered{
+  float: none;
+  margin: 0 auto;
+}

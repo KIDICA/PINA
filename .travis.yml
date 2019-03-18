@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - "9"
+
+branches:
+  except:
+    - gh-pages # will be deployed to, no need to build it
+
+install:
+  - npm install
+
+script:
+  - npm run lint
+  - ng build --prod --base-href /PINA/
+  - mv dist/PINA/index.html dist/PINA/404.html
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/PINA
+  on:
+    branch: master

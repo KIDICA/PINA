@@ -1,0 +1,37 @@
+﻿<div class="container pt-2">
+  <div class="row">
+
+    <!-- Live Ansicht -->
+    <div [hidden]="isCanvasVisible" class="col-md-12 m-0 p-0 text-center">
+      <div class="video-info text-center text-white">
+        <h1 class="m-4" [innerHTML]="'views.home.content.head' | translate"></h1>
+        <h1 class="m-4" [innerHTML]="countDownValue" [hidden]="!showCountDown()"></h1>
+        <div class="video-action-bar">
+          <a href="#" title="switch video now" [hidden]="!areMultipleCamerasAvailable">
+            <img alt="switch-video-button" class="d-inline-block mx-4" height="128" width="128" src="assets/images/baseline-switch_video-24px.svg">
+          </a>
+          <a href="#" title="take an image now" (click)="takeSnapshot()">
+            <img alt="take-image-button" class="d-inline-block mx-4" height="128" width="128" src="assets/images/baseline-camera-24px.svg">
+          </a>
+        </div>
+      </div>
+      <video #video class="webcam-stream" autoplay playsinline></video>
+     </div>
+
+    <!-- Photo Ansicht --> 
+    <div [hidden]="!isCanvasVisible" class="col-md-12 m-0 p-0 text-center">
+        <div class="video-info text-center text-white">
+          <div  class="video-action-bar"
+                style="width:90%; bottom:5%; left:5%; background-color:rgba(255, 255, 255, 0.5); border-style:solid; color:black;"> <!-- quick and dirty for further discussion -->
+            <h2 class="m-4" [innerHTML]="'views.home.content.bottom' | translate"></h2>
+            <a href="#" title="return to previous page" (click)="showCameraStream()">
+              <img alt="return-to-previous-page-button" class="d-inline-block mx-4" height="128" width="128" src="assets/images/baseline-camera-24px.svg">
+            </a>
+          </div>
+        </div>
+        <canvas #canvas class="result-canvas"></canvas>
+    </div>
+
+
+  </div>
+</div>

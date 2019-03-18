@@ -1,0 +1,3 @@
+﻿<div *ngIf="message" [ngClass]="{ 'alert-top alert': message, 'alert-success': message.type === PINA_ALERT_TYPES.SUCCESS, 'alert-danger': message.type === PINA_ALERT_TYPES.ERROR }">
+  <div class="text-center">{{message.text}}</div>
+</div>

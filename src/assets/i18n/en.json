@@ -1,0 +1,32 @@
+{
+  "spinner": {
+    "initText": "Initializing services and camera ..."
+  },
+  "views": {
+    "login": {
+      "content": {
+        "introduction": "PINA stands for \"Person Identification\" and is a small web application to experiment with cloud-based person and facial recognition APIs like (<a href='https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/home' target='_blank'>Azure Cognitive Services</a> or <a href='https://cloud.google.com/vision/docs/' target='_blank'> Google Cloud Vision</a>).",
+        "description": "The pina colada is a sweet cocktail made with rum, coconut cream or coconut milk, and pineapple juice, usually served either blended or shaken with ice. It may be garnished with either a pineapple wedge, maraschino cherry, or both. "
+      },
+      "buttons": {
+        "kionLogin": "Login with KION E-Mail"
+      }
+    },
+    "home": {
+      "messages": {
+        "applicationSuccessfullyInitialized": "Application successfully initialized!",
+        "permissionDeniedError": "Permission denied. Please refresh and give permission."
+      },
+      "content": {
+        "head": "Guess My Age - How old do I look?",
+        "bottom": "Return to previous page and give it another try?"
+      },
+      "canvas": {
+        "resultText": "{numberOfFaces, plural, =0{No} one{One} other{Some}} (pretty) {numberOfFaces, plural, =0{face} one{face} other{faces}} found"
+      },
+      "buttons": {
+        "signOut": "Sign out"
+      }
+    }
+  }
+}

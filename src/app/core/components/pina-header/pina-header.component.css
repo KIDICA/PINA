@@ -1,0 +1,16 @@
+﻿nav.navbar.navbar-expand.navbar-dark {
+  background-color: #AE0055;
+  color: #FFFFFF;
+}
+
+.btn-outline-white {
+  background-color: transparent;
+  background-image: none;
+  border-color: #FFFFFF;
+}
+
+.btn-outline-white:hover {
+  color: #AE0055 !important;
+  background-color: #FFFFFF;
+  border-color: #AE0055;
+}

@@ -1,0 +1,14 @@
+﻿footer{
+  color: #FFFFFF;
+
+}
+
+footer a {
+  text-decoration: underline;
+  color: #FFFFFF;
+}
+
+footer a:hover {
+  text-decoration: none;
+  color: #FFFFFF;
+}

@@ -1,0 +1,16 @@
+﻿<app-pina-header></app-pina-header>
+<div class="col-sm-6 offset-sm-3">
+  <app-pina-alert></app-pina-alert>
+</div>
+<ngx-spinner
+  bdOpacity = 0.9
+  bdColor = "#383633"
+  size = "large"
+  color = "#ae0055"
+  type = "ball-clip-rotate-pulse"
+  fullScreen = "true">
+  <p [innerHTML]="'spinner.initText' | translate"></p>
+</ngx-spinner>
+<!-- main app container -->
+<router-outlet></router-outlet>
+<app-pina-footer></app-pina-footer>

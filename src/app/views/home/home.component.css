@@ -1,0 +1,23 @@
+﻿.container > .row {
+  margin: 0;
+}
+
+video.webcam-stream,
+canvas.result-canvas {
+  width: 100%;
+  height: auto;
+}
+
+.video-info {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+}
+
+.video-action-bar {
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+
+}
