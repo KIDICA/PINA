@@ -3,7 +3,7 @@
 import { environment } from '@environments/environment';
 import { PinaAlertService } from '@app/core/modules/pina-alert/pina-alert.service';
 import { ConfigService } from './config.service';
-import { AzureVisionApiService } from '@app/services/azureVisionApi.service';
+import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.service';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,7 +12,7 @@ export class RTCService {
   private DetectRTC: any = window['DetectRTC'];
 
   constructor(  private configService: ConfigService,
-                private imageAnalyzing: AzureVisionApiService,
+                private imageAnalyzing: AzureVisionFaceApiService,
                 private alertService: PinaAlertService) {
 
      // do some WebRTC checks before creating the interface
@@ -59,7 +59,7 @@ export class RTCService {
     return new Promise(function (resolve, reject) {
       canvas.toBlob(function (blob) {
         resolve(blob);
-      }, 'image/jpeg');
+      }, 'image/png');
     });
   }
 

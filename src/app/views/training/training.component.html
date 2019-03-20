@@ -1,0 +1,25 @@
+﻿<div class="container pt-2">
+
+  
+
+  <div class="row">
+
+    <div class="col-md-12 m-0 p-0 text-center">
+
+      <div class="video-info text-center text-white">
+
+        <app-person-data (personDataEmitter)="receivePersonData($event)"></app-person-data>
+
+        <h1 class="m-4" [innerHTML]="countDownValue" [hidden]="!showCountDownValue()"></h1>
+        <h1 class="m-4" [innerHTML]="message" [hidden]="showCountDownValue()"></h1>
+      </div>
+
+      <canvas #canvas class="result-canvas" [hidden]="true"></canvas>
+
+      <video #video class="webcam-stream" autoplay playsinline></video>
+
+    </div>
+
+  </div>
+
+</div>

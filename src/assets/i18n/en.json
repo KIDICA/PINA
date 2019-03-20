@@ -2,6 +2,24 @@
   "spinner": {
     "initText": "Initializing services and camera ..."
   },
+  "components": {
+    "header": {
+      "buttons": {
+        "training": "Register",
+        "recognition": "Recognize",
+        "signOut": "Sign out"
+      }
+    },
+    "persondata": {
+      "label": {
+        "age": "Age:",
+        "name": "Name:"
+      },
+      "button": {
+        "register": "Register your face!"
+      }
+    }
+  },
   "views": {
     "login": {
       "content": {
@@ -23,10 +41,10 @@
       },
       "canvas": {
         "resultText": "{numberOfFaces, plural, =0{No} one{One} other{Some}} (pretty) {numberOfFaces, plural, =0{face} one{face} other{faces}} found"
-      },
-      "buttons": {
-        "signOut": "Sign out"
       }
+    },
+    "training": {
+
     }
   }
 }

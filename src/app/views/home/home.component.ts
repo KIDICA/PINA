@@ -2,11 +2,12 @@
 import {PinaAlertService, ConfigService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, forkJoin, timer, interval} from 'rxjs';
-import {AzureVisionApiService} from '@app/services/azureVisionApi.service';
+import {Observable, forkJoin, timer, interval, identity} from 'rxjs';
+import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.service';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '@environments/environment';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntil, take} from 'rxjs/operators';
+import { TrainingComponent } from '../training';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -23,109 +24,83 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private configService: ConfigService,
-    private imageAnalyzing: AzureVisionApiService,
+    private imageAnalyzing: AzureVisionFaceApiService,
     private alertService: PinaAlertService,
     private rtcService: RTCService,
     private translateService: TranslateService,
     private spinner: NgxSpinnerService
   ) { }
 
-  private analyzeCapturedSnapshot = (capturedImage) => {
-    return this.imageAnalyzing.detectFaces(capturedImage).toPromise();
-  }
+  private initSuccess = () => {
+    this.hideSpinnerWithDelay(1000).finally(() => {
+      this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
+      this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
 
-  private drawRectanglesAroundFaces = apiResponse => {
-    const faces = apiResponse.faces || [];
-    const canvas = this.canvasElm.nativeElement.getContext('2d');
-    const fillColor = (faces.length > 0) ? environment.canvas.colors.success : environment.canvas.colors.error;
-    canvas.font = `${environment.canvas.font.size} ${environment.canvas.font.family}`;
-    canvas.fillStyle = fillColor;
-    canvas.strokeStyle = fillColor;
+      /*
+      this.imageAnalyzing.trainPersonGroup(TrainingComponent.personGroupId)
+        .toPromise()
+        .then(response => console.log('training resopnse', response));
+      */
 
-    canvas.fillText(this.translateService.instant('views.home.canvas.resultText', {'numberOfFaces': faces.length}), 50, 50);
-
-    faces.forEach(face => {
-        // Rectangle
-        canvas.strokeRect(face.faceRectangle.left, face.faceRectangle.top, face.faceRectangle.width, face.faceRectangle.height);
-        // Age
-        canvas.fillText(face.age, face.faceRectangle.left + face.faceRectangle.width + 5, face.faceRectangle.top + 15);
-        // Gender
-        canvas.fillText(face.gender, face.faceRectangle.left + face.faceRectangle.width + 5, face.faceRectangle.top + 55);
-      });
-  }
-
-  private toggleCanvasVisibility = () => this.isCanvasVisible = !this.isCanvasVisible;
-
-  private refreshCountDownValue = (val) => {
-    this.countDownValue = environment.snapshotIntervalInSeconds - (val + 1);
-  }
-
-  private textResultConsumer = (results) => {
-
-    const canvas = this.canvasElm.nativeElement.getContext('2d');
-    canvas.font = `${environment.canvas.font.size} ${environment.canvas.font.family}`;
-    canvas.fillStyle = environment.canvas.colors.success;
-    canvas.strokeStyle = environment.canvas.colors.success;
-
-    results.forEach(result => {
-
-      // Rectangle
-      canvas.beginPath();
-      canvas.moveTo(result.boundingBox[0], result.boundingBox[1]);
-      canvas.lineTo(result.boundingBox[2], result.boundingBox[3]);
-      canvas.lineTo(result.boundingBox[4], result.boundingBox[5]);
-      canvas.lineTo(result.boundingBox[6], result.boundingBox[7]);
-      canvas.lineTo(result.boundingBox[0], result.boundingBox[1]);
-      canvas.stroke();
-
-      // Text
-      const x = Math.min(result.boundingBox[0], result.boundingBox[2], result.boundingBox[4], result.boundingBox[6]);
-      const y = Math.max(result.boundingBox[1], result.boundingBox[3], result.boundingBox[5], result.boundingBox[7]);
-      canvas.fillText(result.text, x, y + 25);
+      this.takeSnapshots();
     });
   }
 
-  showCountDown() {
-    return this.countDownValue <= environment.snapshotIntervalInSeconds;
+  private initError = error => {
+    this.alertService.error(error);
+    this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
+    this.spinner.hide();
   }
 
-  showCameraStream() {
-    this.isCanvasVisible = false;
-    this.countDownValue = environment.snapshotIntervalInSeconds + 1;
+  private detectFaces = (capturedImage) => {
+    return this.imageAnalyzing.detectFaces(capturedImage).toPromise();
+  }
+
+  private indentifyFaces = (detectFacesResponse) => {
+
+    console.log('detectFacesResponse', detectFacesResponse);
+
+    if (detectFacesResponse.length > 0) {
+      const faceIds: [] = detectFacesResponse.map(v => v['faceId']);
+      this.imageAnalyzing.identifyFaces(TrainingComponent.personGroupId, faceIds).subscribe(this.determinePersons);
+    }
+  }
+
+  private determinePersons = (indentifyFacesResponses) => {
+
+    console.log('indentifyFacesResponse', indentifyFacesResponses);
+
+    indentifyFacesResponses.forEach(indentifyFacesResponse => {
+
+      indentifyFacesResponse.candidates.forEach(candidate => {
+
+        console.log('indentifyFacesResponse candidate', candidate);
+
+        this.imageAnalyzing.findPerson(TrainingComponent.personGroupId, candidate.personId)
+          .subscribe(person => console.log('received person', person));
+
+      });
+    });
   }
 
   ngOnInit() {
     this.spinner.show();
-    forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()])
-    .subscribe(() => {
-      this.hideSpinnerWithDelay(1000)
-      .finally(() => {
-        this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
-        this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
-      });
-    }, error => {
-      this.alertService.error(error);
-      this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
-      this.spinner.hide();
-    });
+    forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.initError);
   }
 
-  takeSnapshot() {
-    const source = interval(1000);
-    const timer$ = timer(environment.snapshotIntervalInSeconds * 1000);
+  private takeSnapshots() {
+    // TODO
+    interval(5000).pipe(take(5)).subscribe(val => {
 
-    source.pipe(takeUntil(timer$)).subscribe(this.refreshCountDownValue);
-    timer$.subscribe(() => {
+      /*
+      this.imageAnalyzing.personGroupTrainingStatus(TrainingComponent.personGroupId)
+        .toPromise()
+        .then(response => console.log('training status', response));
+      */
 
-      const snapshotPromise =  this.rtcService.takeSnapshot(this.videoElm, this.canvasElm);
-
-      snapshotPromise
-        .then(this.analyzeCapturedSnapshot)
-        .then(this.drawRectanglesAroundFaces)
-        .finally(this.toggleCanvasVisibility);
-
-      snapshotPromise
-        .then(x => this.imageAnalyzing.detectText(x, this.textResultConsumer));
+      this.rtcService.takeSnapshot(this.videoElm, this.canvasElm)
+        .then(this.detectFaces)
+        .then(this.indentifyFaces);
     });
   }
 

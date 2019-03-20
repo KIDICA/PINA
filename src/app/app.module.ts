@@ -1,13 +1,15 @@
 ﻿import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {AppRouteModule} from './app.routing';
 
-import {PinaFooterComponent, PinaHeaderComponent} from './core/components';
+import {PinaFooterComponent, PinaHeaderComponent, PersonDataComponent} from './core/components';
 import {HomeComponent} from './views/home';
 import {LoginComponent} from './views/login';
+import {TrainingComponent} from './views/training';
 
 import {CustomAdalGuard} from '@app/core/guards/customAdal.guard';
 import {ConfigService, CustomAdalService} from '@app/services';
@@ -25,6 +27,7 @@ import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compil
     HttpClientModule,
     NgxSpinnerModule,
     PinaAlertModule,
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       compiler: {
         provide: TranslateCompiler,
@@ -43,7 +46,9 @@ import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compil
     PinaHeaderComponent,
     PinaFooterComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    TrainingComponent,
+    PersonDataComponent
   ],
   providers: [
     CustomAdalService,
