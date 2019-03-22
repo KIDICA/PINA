@@ -1,1 +1,2 @@
-﻿export * from './person-data';
+﻿export * from './PersonData';
+

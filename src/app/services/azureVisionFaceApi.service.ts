@@ -77,7 +77,7 @@ export class AzureVisionFaceApiService {
         return this.http.post(uri, blob, {headers: headers, params: params});
     }
 
-    identifyFaces(personGroupId: string, faceIds: []) {
+    identifyFaces(personGroupId: string, faceIds: string[]) {
         const uri = environment.azure.cognitiveServices.faceIdentifyUrl;
         const headers = new HttpHeaders(this.headersJson());
         const body = {faceIds: faceIds, personGroupId: personGroupId};
