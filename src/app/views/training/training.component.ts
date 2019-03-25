@@ -1,17 +1,12 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService} from '@app/services';
+import {PinaAlertService, ConfigService, FaceTrainingService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, timer, interval} from 'rxjs';
-import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.service';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from '@environments/environment';
-import {takeUntil, take, startWith} from 'rxjs/operators';
-import {PersonDataComponent, SimpleDialogComponent} from '@app/core/components';
-import {PreloadAllModules} from '@angular/router';
+import {take} from 'rxjs/operators';
+import {PersonDataComponent} from '@app/core/components';
 import {PersonData} from '@app/core/model';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
-import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   templateUrl: 'training.component.html',
@@ -34,11 +29,11 @@ export class TrainingComponent implements OnInit {
 
   constructor(
     private configService: ConfigService,
-    private imageAnalyzing: AzureVisionFaceApiService,
     private alertService: PinaAlertService,
     private rtcService: RTCService,
     private translateService: TranslateService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private faceTrainingService: FaceTrainingService
   ) { }
 
   private initSuccess = () => {
@@ -54,41 +49,27 @@ export class TrainingComponent implements OnInit {
     this.spinner.hide();
   }
 
-  private submitFaces = (personIdGroupId, personId, blob) => {
-    console.log('submitFaces', personIdGroupId, personId);
-    this.imageAnalyzing.addPersonFace(personIdGroupId, personId, blob)
-      .toPromise()
-      .then(response => console.log('addPersonFace response', response));
-  }
-
-  private registerPerson = (personData: PersonData) => {
-    return this.imageAnalyzing.createPerson(TrainingComponent.personGroupId, personData.name);
-  }
-
   private takeAndSubmitPicture = (val: Number, personData: PersonData) => {
     console.log('takeAndSubmitPicture', val, this.countDownValue);
 
     // message
-      if (val === 14) {
-        this.message = 'finished';
-      } else if (val > 11) {
-        this.message = 'look up';
-      } else if (val > 7) {
-        this.message = 'look right';
-      } else if (val > 4) {
-        this.message = 'look left';
-      }
-
-      // taking and submitting screenshots
-      if (val > 4) {
-        this.rtcService.takeSnapshot(this.videoElm, this.canvasElm)
-          .then(blob => {
-            this.submitFaces(TrainingComponent.personGroupId, personData.persondId, blob);
-          });
-      }
-
-      this.countDownValue--;
+    if (val === 14) {
+      this.message = 'finished';
+    } else if (val > 11) {
+      this.message = 'look up';
+    } else if (val > 7) {
+      this.message = 'look right';
+    } else if (val > 4) {
+      this.message = 'look left';
     }
+
+    // taking and submitting screenshots
+    if (val > 4) {
+      this.faceTrainingService.registerFace(TrainingComponent.personGroupId, personData, this.videoElm, this.canvasElm);
+    }
+
+    this.countDownValue--;
+  }
 
   private takeAndSubmitPictures(personData: PersonData) {
 
@@ -97,7 +78,11 @@ export class TrainingComponent implements OnInit {
     interval(1000).pipe(take(15)).subscribe(
       val => this.takeAndSubmitPicture(val, personData),
       () => {},
-      () => console.log('READY!')
+      () => this.faceTrainingService.beginPersonGroupTraining(
+        TrainingComponent.personGroupId,
+        () => console.log('it is done'),
+        () => console.log('still ongoing')
+      )
     );
   }
 
@@ -113,11 +98,8 @@ export class TrainingComponent implements OnInit {
   receivePersonData($personData: PersonData) {
     console.log('received persondata event', $personData);
     this.personDataComponent.toggleVisibility();
-    this.registerPerson($personData).subscribe(response => {
-      $personData.persondId = response['personId'];
-      console.log('before takeAndSubmitPictures', $personData.name, $personData.age, $personData.persondId);
-      this.takeAndSubmitPictures($personData);
-    });
+    this.faceTrainingService.registerPerson(TrainingComponent.personGroupId, $personData)
+      .then(data => this.takeAndSubmitPictures(data));
   }
 
   private initCameraStream() {

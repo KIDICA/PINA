@@ -1,16 +1,4 @@
-﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService} from '@app/services';
-import {RTCService} from '@app/services/rtc.service';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, forkJoin, timer, interval, identity} from 'rxjs';
-import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.service';
-import {TranslateService} from '@ngx-translate/core';
-import {environment} from '@environments/environment';
-import {takeUntil, take} from 'rxjs/operators';
-import { TrainingComponent } from '../training';
-import { stringify } from '@angular/core/src/util';
-
-export class Rectangle {
+﻿export class Rectangle {
 
   height: number;
   width: number;
@@ -52,7 +40,7 @@ export class FaceContainer {
   private names: Map<string, string> = new Map();
 
   private static bestCandidate(object) {
-    return object.candidates.sort((a,b) => a.confidence > b.confidence)[0];
+    return object.candidates.sort((a, b) => a.confidence > b.confidence)[0];
   }
 
   clear() {

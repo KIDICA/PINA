@@ -1,15 +1,13 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService} from '@app/services';
+import {PinaAlertService, ConfigService, FaceDetectionService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, timer, interval, identity} from 'rxjs';
-import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.service';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '@environments/environment';
-import {takeUntil, take} from 'rxjs/operators';
-import { TrainingComponent } from '../training';
-import { FaceContainer } from './FaceContainer';
-import { promise } from 'protractor';
+import {take} from 'rxjs/operators';
+import {TrainingComponent} from '../training';
+import {FaceContainer} from '../../core/model/FaceContainer';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -24,14 +22,11 @@ export class HomeComponent implements OnInit {
   areMultipleCamerasAvailable = false;
   countDownValue = environment.snapshotIntervalInSeconds + 1;
 
-
-  private container: FaceContainer = new FaceContainer();
-
   constructor(
     private configService: ConfigService,
-    private imageAnalyzing: AzureVisionFaceApiService,
     private alertService: PinaAlertService,
     private rtcService: RTCService,
+    private faceDetectionService: FaceDetectionService,
     private translateService: TranslateService,
     private spinner: NgxSpinnerService
   ) { }
@@ -40,13 +35,6 @@ export class HomeComponent implements OnInit {
     this.hideSpinnerWithDelay(1000).finally(() => {
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
-
-      /*
-      this.imageAnalyzing.trainPersonGroup(TrainingComponent.personGroupId)
-        .toPromise()
-        .then(response => console.log('training resopnse', response));
-      */
-
       this.takeSnapshots();
     });
   }
@@ -57,42 +45,12 @@ export class HomeComponent implements OnInit {
     this.spinner.hide();
   }
 
-  private detectFaces = (capturedImage) => {
-    return this.imageAnalyzing.detectFaces(capturedImage).toPromise();
-  }
-
-  private indentifyFaces = (detectFacesResponse) => {
-
-    console.log('detectFacesResponse', detectFacesResponse);
-
-    if (detectFacesResponse.length > 0) {
-      detectFacesResponse.forEach(r => this.container.addRectangle(r));
-      return this.imageAnalyzing.identifyFaces(TrainingComponent.personGroupId, this.container.getFaceIds()).toPromise();
-    }
-
-    return Promise.reject();
-  }
-
-  private determinePersons = (indentifyFacesResponses) => {
-    console.log('indentifyFacesResponse', indentifyFacesResponses);
-
-    if (indentifyFacesResponses.length > 0 ) {
-      indentifyFacesResponses.forEach(response => this.container.addCandidates(response));
-      const observables = this.container.getPersonIds().map(pid => this.imageAnalyzing.findPerson(TrainingComponent.personGroupId, pid));
-      return forkJoin(observables)
-        .toPromise()
-        .then(responses => responses.forEach(person => this.container.addName(person)));
-    }
-
-    return Promise.reject();
-  }
-
-  private drawRectanglesAndNames = () => {
+  private drawRectanglesAndNames = (container: FaceContainer) => {
     const canvas = this.canvasElm.nativeElement.getContext('2d');
     canvas.font = `${environment.canvas.font.size} ${environment.canvas.font.family}`;
     canvas.fillStyle = environment.canvas.colors.success;
     canvas.strokeStyle = environment.canvas.colors.success;
-    this.container.drawNamesAndRectangles(canvas);
+    container.drawNamesAndRectangles(canvas);
   }
 
   ngOnInit() {
@@ -103,22 +61,14 @@ export class HomeComponent implements OnInit {
   private takeSnapshots() {
     // TODO
     interval(5000).pipe(take(1)).subscribe(val => {
+      this.faceDetectionService.takeSnapshotAndDetectFaces(
+        TrainingComponent.personGroupId,
+        this.videoElm,
+        this.canvasElm,
+        this.drawRectanglesAndNames,
+        () => {}
+      );
 
-      /*
-      this.imageAnalyzing.personGroupTrainingStatus(TrainingComponent.personGroupId)
-        .toPromise()
-        .then(response => console.log('training status', response));
-      */
-      
-      this.container.clear();
-
-      this.rtcService.takeSnapshot(this.videoElm, this.canvasElm)
-        .then(this.detectFaces)
-        .then(this.indentifyFaces)
-        .catch(() => { console.log('no faces found'); })
-        .then(this.determinePersons)
-        .catch(() => { console.log('no persons found'); })
-        .then(this.drawRectanglesAndNames);
     });
   }
 
