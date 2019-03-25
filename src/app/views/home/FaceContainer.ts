@@ -117,6 +117,6 @@ export class FaceContainer {
         return this.names.get(personId);
       }
     }
-    return 'unkown';
+    return 'unknown';
   }
 }

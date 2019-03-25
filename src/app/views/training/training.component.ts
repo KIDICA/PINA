@@ -7,7 +7,7 @@ import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.servic
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '@environments/environment';
 import {takeUntil, take, startWith} from 'rxjs/operators';
-import {PersonDataComponent} from '@app/core/components';
+import {PersonDataComponent, SimpleDialogComponent} from '@app/core/components';
 import {PreloadAllModules} from '@angular/router';
 import {PersonData} from '@app/core/model';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
@@ -21,7 +21,6 @@ export class TrainingComponent implements OnInit {
 
   // TODO
   static readonly personGroupId = 'pina-test-1';
-  static readonly personId = 'd954dfad-a02e-43f5-ae98-06cd1be61c1b'; //fleonhardt
 
   @ViewChild('video') videoElm: ElementRef;
   @ViewChild('canvas') canvasElm: ElementRef;
@@ -67,7 +66,6 @@ export class TrainingComponent implements OnInit {
   }
 
   private takeAndSubmitPicture = (val: Number, personData: PersonData) => {
-
     console.log('takeAndSubmitPicture', val, this.countDownValue);
 
     // message
