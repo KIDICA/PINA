@@ -6,7 +6,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {AppRouteModule} from './app.routing';
 
-import {PinaFooterComponent, PinaHeaderComponent, PersonDataComponent, SimpleDialogComponent} from './core/components';
+import {PinaFooterComponent, PinaHeaderComponent, PersonDataComponent} from './core/components';
 import {HomeComponent} from './views/home';
 import {LoginComponent} from './views/login';
 import {TrainingComponent} from './views/training';
@@ -48,8 +48,7 @@ import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compil
     HomeComponent,
     LoginComponent,
     TrainingComponent,
-    PersonDataComponent,
-    SimpleDialogComponent
+    PersonDataComponent
   ],
   providers: [
     CustomAdalService,

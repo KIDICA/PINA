@@ -8,15 +8,16 @@
 
       <div class="video-info text-center text-white">
 
-        <app-person-data (personDataEmitter)="receivePersonData($event)"></app-person-data>
+        <input type="text">
 
-        <h1 class="m-4" [innerHTML]="countDownValue" [hidden]="!showCountDownValue()"></h1>
-        <h1 class="m-4" [innerHTML]="message" [hidden]="showCountDownValue()"></h1>
+
       </div>
 
-      <canvas #canvas class="result-canvas" [hidden]="true"></canvas>
+      <!-- ignore this -->
 
-      <video #video class="webcam-stream" autoplay playsinline></video>
+      <canvas #canvas class="result-canvas" [hidden]="false"></canvas>
+
+      <video #video class="webcam-stream" [hidden]="false" autoplay playsinline></video>
 
     </div>
 

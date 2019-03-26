@@ -1,8 +1,15 @@
 ﻿<div class="container pt-2">
+  
+  <!-- Photo Ansicht --> 
   <div class="row">
+    <div [hidden]="false" class="col-md-12 m-0 p-0 text-center">
+      <canvas #canvas class="result-canvas"></canvas>
+    </div>
+  </div>
 
-    <!-- Live Ansicht -->
-    <div [hidden]="true" class="col-md-12 m-0 p-0 text-center">
+  <!-- Live Ansicht -->
+  <div class="row">
+    <div [hidden]="false" class="col-md-12 m-0 p-0 text-center">
       <div class="video-info text-center text-white">
         <div class="video-action-bar">
           <a href="#" title="switch video now" [hidden]="!areMultipleCamerasAvailable">
@@ -11,13 +18,8 @@
       </div>
       <video #video class="webcam-stream" autoplay playsinline></video>
      </div>
-  </div>
-  
-    <!-- Photo Ansicht --> 
-    <div [hidden]="false" class="col-md-12 m-0 p-0 text-center">
-        <canvas #canvas class="result-canvas"></canvas>
     </div>
-
-
   </div>
+
+
 </div>
