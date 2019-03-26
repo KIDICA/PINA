@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
-    forkJoin([this.configService.isConfigInitialized(), this.allesKackorama()]).subscribe(this.initSuccess, this.initError);
+    forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.initError);
   }
 
   private takeSnapshots() {
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
       .then(constraints => navigator.mediaDevices.getUserMedia(constraints));
   }
 
-  private allesKackorama() {
+  private initCameraStream() {
     this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
     return Observable.create((observable) => {
       this.firstVideoDeviceStream().then((stream) => {
@@ -93,27 +93,6 @@ export class HomeComponent implements OnInit {
         } else {
           observable.error(error);
         }
-      });
-    });
-  }
-
-  private initCameraStream() {
-    this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
-    return Observable.create((observable) => {
-      const constraints = {
-        audio: false,
-        video: {}
-      };
-      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        this.videoElm.nativeElement.srcObject = stream;
-        observable.next(true);
-        observable.complete();
-      }).catch((error) => {
-        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-        if (error === 'PermissionDeniedError') {
-          observable.error(this.translateService.instant('view.home.messages.permissionDeniedError'));
-        }
-        observable.error(error);
       });
     });
   }

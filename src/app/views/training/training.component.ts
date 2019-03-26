@@ -17,8 +17,9 @@ export class TrainingComponent implements OnInit {
   // TODO
   static readonly personGroupId = 'pina-test-1';
 
-  @ViewChild('video') videoElm: ElementRef;
-  @ViewChild('canvas') canvasElm: ElementRef;
+  /* @ViewChild('video') */ videoElm: ElementRef;
+  /* @ViewChild('canvas')*/ canvasElm: ElementRef;
+
   @ViewChild(PersonDataComponent) personDataComponent: PersonDataComponent;
 
   isMessageVisible = false;
@@ -87,6 +88,35 @@ export class TrainingComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
+    const video: HTMLVideoElement = document.createElement('video');
+    video.className = 'webcam-stream';
+    video.hidden = false;
+    video.load();
+    video.play();
+    console.log('video done');
+
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    canvas.className = 'result-canvas';
+    canvas.hidden = false;
+    console.log('canvas done');
+
+    document.body.appendChild(video);
+    document.body.appendChild(canvas);
+    console.log('document done');
+
+    this.videoElm = new ElementRef(video);
+    this.canvasElm = new ElementRef(canvas);
+    console.log('elements done');
+
+    const c = this.canvasElm.nativeElement.getContext('2d');
+    c.font = '30px Arial';
+    c.fillStyle = '#00FF00';
+    c.strokeStyle = '#00FF00';
+    c.fillText('hello world', 50, 50);
+    console.log('painting done');
+
     this.spinner.show();
     forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.initError);
   }
