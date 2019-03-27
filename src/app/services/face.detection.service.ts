@@ -23,7 +23,7 @@ export class FaceDetectionService {
       return this.imageAnalyzing.identifyFaces(personGroupId, data.getFaceIds()).toPromise();
     }
 
-    return Promise.reject();
+    return Promise.reject(new Error('no faces found'));
   }
 
   private determinePersons = (indentifyFacesResponses, personGroupId: string, data: FaceContainer) => {
@@ -36,7 +36,7 @@ export class FaceDetectionService {
         .then(responses => responses.forEach(person => data.addName(person)));
     }
 
-    return Promise.reject();
+    return Promise.reject(new Error('no persons found'));
   }
 
   public takeSnapshotAndDetectFaces(
@@ -44,16 +44,14 @@ export class FaceDetectionService {
     videoElm: ElementRef,
     canvasElm: ElementRef,
     consumer: (data: FaceContainer) => void,
-    error: Function) {
+    errorHandler: (error: Error) => void) {
 
     const data: FaceContainer = new FaceContainer();
 
     this.rtcService.takeSnapshot(videoElm, canvasElm)
         .then(this.detectFaces)
-        .then(response => this.indentifyFaces(response, personGroupId, data))
-        .catch(error())
-        .then(response => this.determinePersons(response, personGroupId, data))
-        .catch(error())
+        .then(response => this.indentifyFaces(response, personGroupId, data), errorHandler)
+        .then(response => this.determinePersons(response, personGroupId, data), errorHandler)
         .then(() => consumer(data));
   }
 }

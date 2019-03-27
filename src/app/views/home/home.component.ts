@@ -2,12 +2,12 @@
 import {PinaAlertService, ConfigService, FaceDetectionService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, forkJoin, timer, interval, identity} from 'rxjs';
+import {Observable, forkJoin, timer, interval, identity, Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 import {environment} from '@environments/environment';
-import {take} from 'rxjs/operators';
 import {TrainingComponent} from '../training';
 import {FaceContainer} from '../../core/model/FaceContainer';
+import {Router} from '@angular/router';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -15,12 +15,11 @@ import {FaceContainer} from '../../core/model/FaceContainer';
 })
 export class HomeComponent implements OnInit {
 
-  @ViewChild('video') videoElm: ElementRef;
-  @ViewChild('canvas') canvasElm: ElementRef;
+  @ViewChild('video') private videoElm: ElementRef;
+  @ViewChild('canvas') private canvasElm: ElementRef;
+  private subscription: Subscription;
 
-  isCanvasVisible = false;
   areMultipleCamerasAvailable = false;
-  countDownValue = environment.snapshotIntervalInSeconds + 1;
 
   constructor(
     private configService: ConfigService,
@@ -28,7 +27,8 @@ export class HomeComponent implements OnInit {
     private rtcService: RTCService,
     private faceDetectionService: FaceDetectionService,
     private translateService: TranslateService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) { }
 
   private initSuccess = () => {
@@ -45,6 +45,11 @@ export class HomeComponent implements OnInit {
     this.spinner.hide();
   }
 
+  private errorHandler = error => {
+    // TODO
+    console.log('some error happend', error);
+  }
+
   private drawRectanglesAndNames = (container: FaceContainer) => {
     const canvas = this.canvasElm.nativeElement.getContext('2d');
     canvas.font = `${environment.canvas.font.size} ${environment.canvas.font.family}`;
@@ -58,15 +63,22 @@ export class HomeComponent implements OnInit {
     forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.initError);
   }
 
+  navigateToFacialTraining() {
+    if (this.subscription !== undefined) {
+        this.subscription.unsubscribe();
+    }
+    this.router.navigate(['training']);
+  }
+
   private takeSnapshots() {
-    // TODO
-    interval(5000).pipe(take(1)).subscribe(val => {
+    this.subscription = interval(3000).subscribe(val => {
+
       this.faceDetectionService.takeSnapshotAndDetectFaces(
         TrainingComponent.personGroupId,
         this.videoElm,
         this.canvasElm,
         this.drawRectanglesAndNames,
-        () => {}
+        this.errorHandler
       );
 
     });
