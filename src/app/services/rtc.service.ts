@@ -49,18 +49,11 @@ export class RTCService {
   }
 
   stopAllCurrentlyRunningStreams(videoElem: ElementRef) {
-    // stop any active streams in the window
-    
-    
-    
-    
-    
     if (videoElem && videoElem.nativeElement && videoElem.nativeElement.srcObject) {
       videoElem.nativeElement.srcObject.getTracks().forEach((track) => track.stop());
       videoElem.nativeElement.srcObject = null;
     }
   }
-
 
   takeSnapshot(videoElem: ElementRef, canvasElem: ElementRef): Promise<{}> {
     const video = videoElem.nativeElement;
