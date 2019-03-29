@@ -11,7 +11,7 @@ export const environment = {
   },
   canvas: {
     font: {
-      size: '30px',
+      size: '25px',
       family: 'Arial'
     },
     colors: {

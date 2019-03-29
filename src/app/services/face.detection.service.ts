@@ -18,8 +18,12 @@ export class FaceDetectionService {
 
   private indentifyFaces = (detectFacesResponse, personGroupId: string, data: FaceContainer) => {
 
-    if (detectFacesResponse.length > 0) {
-      detectFacesResponse.forEach(r => data.addRectangle(r));
+    if (detectFacesResponse !== undefined && detectFacesResponse.length > 0) {
+      detectFacesResponse.forEach(r => {
+        data.addRectangle(r);
+        data.addAge(r);
+        data.addGender(r);
+      });
       return this.imageAnalyzing.identifyFaces(personGroupId, data.getFaceIds()).toPromise();
     }
 
@@ -28,7 +32,7 @@ export class FaceDetectionService {
 
   private determinePersons = (indentifyFacesResponses, personGroupId: string, data: FaceContainer) => {
 
-    if (indentifyFacesResponses.length > 0 ) {
+    if (indentifyFacesResponses !== undefined && indentifyFacesResponses.length > 0 ) {
       indentifyFacesResponses.forEach(response => data.addCandidates(response));
       const observables = data.getPersonIds().map(personId => this.imageAnalyzing.findPerson(personGroupId, personId));
       return forkJoin(observables)

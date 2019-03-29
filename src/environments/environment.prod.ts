@@ -7,7 +7,7 @@ export const environment = {
   },
   canvas: {
     font: {
-      size: '30px',
+      size: '25px',
       family: 'Arial'
     },
     colors: {
@@ -23,8 +23,9 @@ export const environment = {
       endpoints: ['https://vault.azure.net']
     },
     cognitiveServices: {
-      facesUrl: 'https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze',
-      ocrUrl: 'https://westeurope.api.cognitive.microsoft.com/vision/v2.0/recognizeText'
+      faceDetectUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect',
+      faceIdentifyUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/identify',
+      personGroupsUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups'
     }
   }
 };

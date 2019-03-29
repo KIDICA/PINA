@@ -10,8 +10,8 @@ export class RTCService {
   private DetectRTC: any = window['DetectRTC'];
 
   constructor(
-    private translateService: TranslateService,
-    private alertService: PinaAlertService) {
+    private alertService: PinaAlertService
+  ) {
     this.DetectRTC.load(() => this.executeSomeChecks());
   }
 

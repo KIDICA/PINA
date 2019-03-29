@@ -30,11 +30,13 @@ export class Candidate {
 
 export class FaceContainer {
 
-  // key == faceId
-  private rectangles: Map<string, Rectangle> = new Map();
+  static readonly UNKNOWN = 'unknown';
 
   // key == faceId
+  private rectangles: Map<string, Rectangle> = new Map();
   private candidates: Map<string, Candidate> = new Map();
+  private ages: Map<string, number> = new Map();
+  private genders: Map<string, string> = new Map();
 
   // key == personId
   private names: Map<string, string> = new Map();
@@ -69,6 +71,20 @@ export class FaceContainer {
     this.rectangles.set(faceId, rectangle);
   }
 
+  addAge(response) {
+    const faceId: string = response.faceId;
+    const age: number = response.faceAttributes.age;
+    console.log('adding age', faceId, age);
+    this.ages.set(faceId, age);
+  }
+
+  addGender(response) {
+    const faceId: string = response.faceId;
+    const gender: string = response.faceAttributes.gender;
+    console.log('adding gender', faceId, gender);
+    this.genders.set(faceId, gender);
+  }
+
   addCandidates(response) {
     if (response.candidates.length > 0) {
       const faceId: string = response.faceId;
@@ -87,14 +103,11 @@ export class FaceContainer {
 
   drawNamesAndRectangles(canvas) {
     this.rectangles.forEach((rectangle: Rectangle, faceId: string) => {
-
       console.log('drawing', faceId, rectangle);
-
-      // Rectangle
       canvas.strokeRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height);
-
-      // Name
-      canvas.fillText(this.determineName(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 15);
+      canvas.fillText(this.determineName(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 25);
+      canvas.fillText(this.determineAge(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 50);
+      canvas.fillText(this.determineGender(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 75);
     });
   }
 
@@ -105,6 +118,20 @@ export class FaceContainer {
         return this.names.get(personId);
       }
     }
-    return 'unknown';
+    return FaceContainer.UNKNOWN;
+  }
+
+  private determineAge(faceId: string): string {
+    if (this.ages.has(faceId)) {
+      return this.ages.get(faceId).toString();
+    }
+    return FaceContainer.UNKNOWN;
+  }
+
+  private determineGender(faceId: string): string {
+    if (this.genders.has(faceId)) {
+      return this.genders.get(faceId);
+    }
+    return FaceContainer.UNKNOWN;
   }
 }
