@@ -29,7 +29,8 @@ export const environment = {
     cognitiveServices: {
       faceDetectUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect',
       faceIdentifyUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/identify',
-      personGroupsUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups'
+      personGroupsUrl: 'https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups',
+      analyzeVisionUrl: 'https://westeurope.api.cognitive.microsoft.com/vision/v2.0/analyze'
     }
   }
 };

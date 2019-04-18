@@ -73,7 +73,7 @@ export class AzureVisionFaceApiService {
     detectFaces(blob) {
         const uri = environment.azure.cognitiveServices.faceDetectUrl;
         const headers = new HttpHeaders(this.headersOctetStream());
-        const params = new HttpParams().set('returnFaceId', 'true').set('returnFaceAttributes', 'age,gender');
+        const params = new HttpParams().set('returnFaceId', 'true').set('returnFaceAttributes', 'age,gender,emotion');
         return this.http.post(uri, blob, {headers: headers, params: params});
     }
 
@@ -82,6 +82,13 @@ export class AzureVisionFaceApiService {
         const headers = new HttpHeaders(this.headersJson());
         const body = {faceIds: faceIds, personGroupId: personGroupId};
         return this.http.post(uri, body, {headers: headers});
+    }
+
+    detectCelebrities(blob) {
+        const uri  = environment.azure.cognitiveServices.analyzeVisionUrl;
+        const headers = new HttpHeaders(this.headersOctetStream());
+        const params = new HttpParams().set('visualFeatures', 'Faces').set('details', 'Celebrities');
+        return this.http.post(uri, blob, {headers: headers, params: params});
     }
 
 }

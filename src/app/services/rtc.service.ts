@@ -1,7 +1,6 @@
 ﻿import {ElementRef, Injectable} from '@angular/core';
-import { environment } from '@environments/environment';
-import { PinaAlertService } from '@app/core/modules/pina-alert/pina-alert.service';
-import { TranslateService } from '@ngx-translate/core';
+import {environment} from '@environments/environment';
+import {PinaAlertService} from '@app/core/modules/pina-alert/pina-alert.service';
 
 
 @Injectable({providedIn: 'root'})

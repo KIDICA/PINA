@@ -20,6 +20,9 @@ export class FaceDetectionService {
 
     if (detectFacesResponse !== undefined && detectFacesResponse.length > 0) {
       detectFacesResponse.forEach(r => {
+        
+        console.log('face response', r);
+        
         data.addRectangle(r);
         data.addAge(r);
         data.addGender(r);
@@ -53,7 +56,13 @@ export class FaceDetectionService {
     const data: FaceContainer = new FaceContainer();
 
     this.rtcService.takeSnapshot(videoElm, canvasElm)
-        .then(this.detectFaces)
+        .then(response => {
+          
+          // TODO
+          this.imageAnalyzing.detectCelebrities(response).toPromise().then(r => console.log('celebritites', r));
+          
+          return this.detectFaces(response);
+        })
         .then(response => this.indentifyFaces(response, personGroupId, data), errorHandler)
         .then(response => this.determinePersons(response, personGroupId, data), errorHandler)
         .then(() => consumer(data));

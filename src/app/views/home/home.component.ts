@@ -8,6 +8,7 @@ import {environment} from '@environments/environment';
 import {TrainingComponent} from '../training';
 import {FaceContainer} from '../../core/model/FaceContainer';
 import {Router} from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'home.component.html',
@@ -71,7 +72,7 @@ export class HomeComponent implements OnInit {
   }
 
   private takeSnapshots() {
-    this.subscription = interval(3000).subscribe(val => {
+    this.subscription = interval(3000).pipe(take(3)).subscribe(val => {
 
       this.faceDetectionService.takeSnapshotAndDetectFaces(
         TrainingComponent.personGroupId,
