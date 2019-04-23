@@ -20,12 +20,10 @@ export class FaceDetectionService {
 
     if (detectFacesResponse !== undefined && detectFacesResponse.length > 0) {
       detectFacesResponse.forEach(r => {
-        
-        console.log('face response', r);
-        
         data.addRectangle(r);
         data.addAge(r);
         data.addGender(r);
+        data.addEmotions(r);
       });
       return this.imageAnalyzing.identifyFaces(personGroupId, data.getFaceIds()).toPromise();
     }
@@ -57,10 +55,6 @@ export class FaceDetectionService {
 
     this.rtcService.takeSnapshot(videoElm, canvasElm)
         .then(response => {
-          
-          // TODO
-          this.imageAnalyzing.detectCelebrities(response).toPromise().then(r => console.log('celebritites', r));
-          
           return this.detectFaces(response);
         })
         .then(response => this.indentifyFaces(response, personGroupId, data), errorHandler)

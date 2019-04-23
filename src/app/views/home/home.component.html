@@ -2,7 +2,7 @@
   
   <!-- Photo Ansicht --> 
   <div class="row">
-    <div [hidden]="false" class="col-md-12 m-0 p-0 text-center">
+    <div [hidden]="true" class="col-md-12 m-0 p-0 text-center">
       <canvas #canvas class="result-canvas"></canvas>
     </div>
   </div>
@@ -31,6 +31,17 @@
           </a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- THE EMOTIONS -->
+  <div class="row">
+    <div [hidden]="false" class="col-md-12 m-0 p-0 text-center">
+        <div class="video-info text-center text-white">
+          <li *ngFor="let emotion of emotions">
+            {{ emotion }} <br/>
+          </li>
+        </div>
     </div>
   </div>
 

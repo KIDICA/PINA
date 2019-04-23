@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   private subscription: Subscription;
 
   areMultipleCamerasAvailable = false;
+  emotions = new Array<string>();
 
   constructor(
     private configService: ConfigService,
@@ -57,6 +58,10 @@ export class HomeComponent implements OnInit {
     canvas.fillStyle = environment.canvas.colors.success;
     canvas.strokeStyle = environment.canvas.colors.success;
     container.drawNamesAndRectangles(canvas);
+
+    // TODO
+    this.emotions = new Array<string>();
+    container.getAllEmotions().forEach((v,k) => this.emotions.push(v));
   }
 
   ngOnInit() {
@@ -72,7 +77,7 @@ export class HomeComponent implements OnInit {
   }
 
   private takeSnapshots() {
-    this.subscription = interval(3000).pipe(take(3)).subscribe(val => {
+    this.subscription = interval(1000).subscribe(val => {
 
       this.faceDetectionService.takeSnapshotAndDetectFaces(
         TrainingComponent.personGroupId,

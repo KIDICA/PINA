@@ -37,6 +37,7 @@ export class FaceContainer {
   private candidates: Map<string, Candidate> = new Map();
   private ages: Map<string, number> = new Map();
   private genders: Map<string, string> = new Map();
+  private emotions: Map<string, string> = new Map();
 
   // key == personId
   private names: Map<string, string> = new Map();
@@ -85,6 +86,13 @@ export class FaceContainer {
     this.genders.set(faceId, gender);
   }
 
+  addEmotions(response) {
+    const faceId: string = response.faceId;
+    const emotions: string = this.buildEmotions(response.faceAttributes.emotion);
+    console.log('adding emotions', faceId, emotions);
+    this.emotions.set(faceId, emotions);
+  }
+
   addCandidates(response) {
     if (response.candidates.length > 0) {
       const faceId: string = response.faceId;
@@ -111,6 +119,11 @@ export class FaceContainer {
     });
   }
 
+  // TODO
+  getAllEmotions(): Map<string, string> {
+    return this.emotions;
+  }
+
   private determineName(faceId: string): string {
     if (this.candidates.has(faceId)) {
       const personId = this.candidates.get(faceId).personId;
@@ -134,4 +147,16 @@ export class FaceContainer {
     }
     return FaceContainer.UNKNOWN;
   }
+
+  private buildEmotions(emotions): string {
+    return 'anger: ' + Math.round(emotions.anger * 100) +
+      ' | contempt: ' + Math.round(emotions.contempt * 100) +
+      ' | disgust: ' + Math.round(emotions.disgust * 100) +
+      ' | fear: ' + Math.round(emotions.fear * 100) +
+      ' | happiness: ' + Math.round(emotions.happiness * 100) +
+      ' | neutral: ' + Math.round(emotions.neutral * 100) +
+      ' | sadness: ' +  + Math.round(emotions.sadness * 100) +
+      ' | surprise: ' + Math.round(emotions.surprise * 100);
+  }
+
 }
