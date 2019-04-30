@@ -1,0 +1,47 @@
+﻿<div [hidden]="true">
+  <canvas #canvasPerson></canvas>
+</div>
+
+<div [hidden]="false" style="top: 0px; left: 0px; margin: 0px; border: 0px; padding: 0px; position:absolute; width: 100%; height: 100%; background-color: black;">
+
+  <video #videoPerson class="webcam-stream" autoplay playsinline></video>
+
+  <div class="verticalLine">&nbsp;</div>
+      
+  <div class="centerCircleBorder">
+      <img style="width: 15vw; height: auto;" src="/assets/images/game_logo_large.png">
+  </div>
+
+  <!-- ####################################################################################################### -->
+
+  <div [hidden]="!playerOne.isNoPlayerFound()" class="leftGauge largerFont">
+    WAITING FOR PLAYER ONE
+  </div>
+
+  <div [hidden]="!playerOne.isUnknownPlayerFound()" class="leftGauge largerFont">
+    HEY THERE,<br>FIRST-TIMER!
+  </div>
+
+  <div [hidden]="!playerOne.isKnownPlayerFound()" class="leftGauge largerFont">
+    WELCOME BACK!<br>
+    {{playerOne.name}}<br>
+    BEST TIME: {{playerOne.time}}<br>
+  </div>
+
+  <!-- ####################################################################################################### -->
+
+  <div [hidden]="!playerTwo.isNoPlayerFound()" class="rightGauge largerFont">
+    WAITING FOR PLAYER TWO
+  </div>
+
+  <div [hidden]="!playerTwo.isUnknownPlayerFound()" class="rightGauge largerFont">
+    HEY THERE,<br>FIRST-TIMER!
+  </div>
+  
+  <div [hidden]="!playerTwo.isKnownPlayerFound()" class="rightGauge largerFont">
+    WELCOME BACK!<br>
+    {{playerTwo.name}}<br>
+    BEST TIME: {{playerTwo.time}}<br>
+  </div>
+
+</div>

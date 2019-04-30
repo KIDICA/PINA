@@ -56,10 +56,12 @@ export class RTCService {
 
   takeSnapshot(videoElem: ElementRef, canvasElem: ElementRef): Promise<{}> {
     const video = videoElem.nativeElement;
-    canvasElem.nativeElement.width = video.videoWidth;
-    canvasElem.nativeElement.height = video.videoHeight;
+    const width = video.videoWidth; // video.clientWidth;
+    const height = video.videoHeight; // video.clientHeight;
+    canvasElem.nativeElement.width = width;
+    canvasElem.nativeElement.height = height;
     const canvas = canvasElem.nativeElement.getContext('2d');
-    canvas.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    canvas.drawImage(video, 0, 0, width, height);
     return this.getCanvasBlob(canvasElem.nativeElement);
   }
 

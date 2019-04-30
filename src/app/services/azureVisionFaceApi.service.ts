@@ -73,7 +73,9 @@ export class AzureVisionFaceApiService {
     detectFaces(blob) {
         const uri = environment.azure.cognitiveServices.faceDetectUrl;
         const headers = new HttpHeaders(this.headersOctetStream());
-        const params = new HttpParams().set('returnFaceId', 'true').set('returnFaceAttributes', 'age,gender,emotion');
+        // const params = new HttpParams().set('returnFaceId', 'true').set('returnFaceAttributes', 'age,gender,emotion');
+        const params = new HttpParams().set('returnFaceId', 'true').set('returnFaceAttributes', 'emotion');
+
         return this.http.post(uri, blob, {headers: headers, params: params});
     }
 

@@ -1,0 +1,29 @@
+﻿<div class="theDarkness">
+
+  <div class="centerMessage textMedium">
+    <img style="width: 10vw; height: auto;" src="/assets/images/trophy_large.png"><br>
+    High Scores
+  </div>
+
+  <div class="table textSmall">
+
+    <div class="row"> 
+      <div class="firstCell header">Place</div>
+      <div class="secondCell header">Highscore</div>
+      <div class="thirdCell header">Playername</div>
+    </div>
+
+    <div class="row" *ngFor="let score of getHighscores()"> 
+      <div class="firstCell">{{score.place}}</div>
+      <div class="secondCell">{{score.score}}</div>
+      <div class="thirdCell">{{score.name}}</div>
+    </div>
+
+  </div>
+
+  <div class="bottom">
+    <p class="textSmall">Continuing in</p>
+    <p class="textMedium">00:0{{countDownValue}}</p>
+  </div>
+
+</div>

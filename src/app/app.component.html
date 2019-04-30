@@ -1,7 +1,9 @@
 ﻿<app-pina-header></app-pina-header>
+
 <div class="col-sm-6 offset-sm-3">
   <app-pina-alert></app-pina-alert>
 </div>
+
 <ngx-spinner
   bdOpacity = 0.9
   bdColor = "#383633"
@@ -11,6 +13,8 @@
   fullScreen = "true">
   <p [innerHTML]="'spinner.initText' | translate"></p>
 </ngx-spinner>
-<!-- main app container -->
+
 <router-outlet></router-outlet>
+
+
 <app-pina-footer></app-pina-footer>

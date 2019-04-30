@@ -1,0 +1,79 @@
+﻿<div [hidden]="true">
+  <canvas #canvas></canvas>
+</div>
+
+<video #video class="webcam-stream" autoplay playsinline></video>      
+
+<!-- ############################# Overlay ############################# -->
+
+<div [hidden]="hideOverlay" class="overlay">
+
+  <div class="overlayTop">
+    <p class="textSmall">{{overlayTopMessage()}}</p>
+    <img src="{{image()}}" class="overlayImage">
+    <p class="textLarge">{{overlayMiddleMessage()}}</p>
+  </div>
+
+  <div class="overlayBottom">
+    <p class="textSmall">{{overlayBottomMessage()}}</p>
+    <p class="textMedium">00:0{{countDownValue}}</p>
+  </div>
+</div>
+
+<!-- ############################# Game ############################# -->
+
+<div [hidden]="!hideOverlay" class="webcam-stream">
+
+  <div class="centerMessage textMedium">{{message()}}</div>
+
+  <div class="verticalLine">&nbsp;</div>
+      
+  <div [ngClass]="{
+    'animatedCenterCircle': runCircleFillAnimation,
+    'centerCircle': !runCircleFillAnimation
+  }">&nbsp;</div>
+  
+  <div class="centerCircleBorder">
+      <img class="centeredEmoji" src="{{image()}}">
+  </div>
+
+  <div class="leftGauge" #leftContainer>
+
+    <radial-gauge
+      major-ticks="[0, 25, 50, 75, 100]"
+      min-Value="0"
+      max-Value="100"
+      highlights='[ 
+        {"from": 0, "to": 25, "color": "rgb(245, 168, 156)"},
+        {"from": 25, "to": 50, "color": "rgb(240, 146, 136)"},
+        {"from": 50, "to": 75, "color": "rgb(234, 127, 109)"},
+        {"from": 75, "to": 100, "color": "rgb(223, 111, 92)"} 
+      ]'
+      color-plate="rgb(255, 255, 255)"
+      width="200"
+      height="200"
+      value="{{leftGaugeValue}}"></radial-gauge>
+
+  </div>
+  
+  <div class="rightGauge">
+
+    <radial-gauge
+      major-ticks="[0, 25, 50, 75, 100]"
+      min-Value="0"
+      max-Value="100"
+      highlights='[ 
+        {"from": 0, "to": 25, "color": "rgb(245, 168, 156)"},
+        {"from": 25, "to": 50, "color": "rgb(240, 146, 136)"},
+        {"from": 50, "to": 75, "color": "rgb(234, 127, 109)"},
+        {"from": 75, "to": 100, "color": "rgb(223, 111, 92)"} 
+      ]'
+      color-plate="rgb(255, 255, 255)"
+      width="200"
+      height="200"
+      animationRule="linear"
+      value="{{rightGaugeValue}}"></radial-gauge>
+
+    </div>
+
+</div>

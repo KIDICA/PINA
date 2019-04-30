@@ -1,23 +1,92 @@
-﻿.container > .row {
-  margin: 0;
-}
-
-video.webcam-stream,
-canvas.result-canvas {
-  width: 100%;
-  height: auto;
-}
-
-.video-info {
+﻿.verticalLine {
+  border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
+  height: 50vh;
   position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 100;
+  left: 49.75vw;
+  top: 24vw;
 }
 
-.video-action-bar {
+.text {
+  text-align: left; 
+  color: #FFF;
+  font-size: 2vh;
+  line-height: 1.25;
+}
+
+.left {
+  left: 15vw; 
+  bottom: 10vh; 
+  position: absolute; 
+  width: 20vw; 
+}
+
+.right {
+  right: 15vw; 
+  bottom: 10vh; 
+  position: absolute; 
+  width: 20vw;
+}
+
+.centerCircle {
+  position: absolute; 
+}
+
+.animatedCenterCircle {
+  position: absolute; 
+  background: rgba(255, 255, 255, 0.5);
+  animation-name: animation;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+.centerMessage {
   position: absolute;
-  bottom: 100px;
-  width: 100%;
+  width: 14vw; 
+  height: 2vw;
+  left: 43vw; 
+  top: 2vw;
+  text-align: center;
+  color: #FFF;
+  font-size: 2vw;
+  line-height: 1.0;
+}
+
+.centerCircleBorder {
+  position: absolute; 
+  border-radius: 28vw 28vw 28vw 28vw;
+  width: 14vw; 
+  height: 14vw;
+  left: 43vw; 
+  top: 5vw;
+  border: 3px dotted rgba(255, 255, 255, 0.5);
+  text-align: center;
+  vertical-align: middle;
+}
+
+@keyframes animation {
+  
+  0% {
+    border-radius: 4vw 4vw 4vw 4vw;
+    width: 2vw; 
+    height: 2vw;
+    left: 49vw; 
+    top: 11vw;
+  }
+  
+  50% { 
+    border-radius: 28vw 28vw 28vw 28vw;
+    width: 14vw; 
+    height: 14vw;
+    left: 43vw; 
+    top: 5vw;
+  }
+  
+  100% {
+    border-radius: 4vw 4vw 4vw 4vw;
+    width: 2vw; 
+    height: 2vw;
+    left: 49vw; 
+    top: 11vw;
+  }
 
 }

@@ -1,15 +1,20 @@
 ﻿import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {AppRouteModule} from './app.routing';
 
+// Views
 import {PinaFooterComponent, PinaHeaderComponent, PersonDataComponent} from './core/components';
-import {HomeComponent} from './views/home';
+import {RecognitionEmotionComponent} from './views/recognition-emotion';
+import {RecognitionPersonComponent} from './views/recognition-person';
 import {LoginComponent} from './views/login';
 import {TrainingComponent} from './views/training';
+import {IntroductionComponent} from './views/introduction';
+import {HighscoreComponent} from './views/highscore';
 
 import {CustomAdalGuard} from '@app/core/guards/customAdal.guard';
 import {ConfigService, CustomAdalService} from '@app/services';
@@ -20,14 +25,17 @@ import {PinaAlertModule} from '@app/core/modules';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateCompiler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compiler';
+import {GaugesModule} from 'ng-canvas-gauges';
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     NgxSpinnerModule,
     PinaAlertModule,
     ReactiveFormsModule,
+    GaugesModule,
     TranslateModule.forRoot({
       compiler: {
         provide: TranslateCompiler,
@@ -45,9 +53,12 @@ import {TranslateMessageFormatCompiler} from 'ngx-translate-messageformat-compil
     AppComponent,
     PinaHeaderComponent,
     PinaFooterComponent,
-    HomeComponent,
+    RecognitionEmotionComponent,
+    RecognitionPersonComponent,
+    IntroductionComponent,
     LoginComponent,
     TrainingComponent,
+    HighscoreComponent,
     PersonDataComponent
   ],
   providers: [

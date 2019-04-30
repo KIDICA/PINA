@@ -1,4 +1,6 @@
-﻿export class Rectangle {
+﻿import { TouchSequence } from "selenium-webdriver";
+
+export class Rectangle {
 
   height: number;
   width: number;
@@ -120,9 +122,24 @@ export class FaceContainer {
   }
 
   // TODO
+  public magic() {
+    return this.getFaceIds().map(faceId => {
+      return {
+          faceId: faceId,
+          personId: this.candidates.has(faceId) ? this.candidates.get(faceId).personId : FaceContainer.UNKNOWN,
+          name: this.determineName(faceId),
+          rectangle: this.rectangles.get(faceId)
+        };
+      }
+    );
+  }
+
+  // TODO
   getAllEmotions(): Map<string, string> {
     return this.emotions;
   }
+
+
 
   private determineName(faceId: string): string {
     if (this.candidates.has(faceId)) {
