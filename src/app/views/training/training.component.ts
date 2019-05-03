@@ -2,6 +2,9 @@
 import {interval, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
+import { FaceTrainingService } from '@app/services';
+import { PlayersState } from '@app/services/players.state';
+import { RecognitionPersonComponent } from '../recognition-person';
 
 @Component({
   templateUrl: 'training.component.html',
@@ -9,20 +12,42 @@ import {take} from 'rxjs/operators';
 })
 export class TrainingComponent implements OnInit {
 
-  private subscription: Subscription;
-
-  constructor( private router: Router ) {}
+  constructor(
+    private faceTrainingService: FaceTrainingService,
+    private currentPlayers: PlayersState,
+    private router: Router
+  ) {}
 
   runCircleFillAnimation = false;
 
   public ngOnInit() {
 
-    this.runCircleFillAnimation = true;
+    console.log('TrainingComponent', this.currentPlayers);
 
-    this.subscription = interval(10000).pipe(take(1)).subscribe(val => {
-      console.log('i am done!');
-    });
+    if (!this.currentPlayers.trainingNeeded) {
 
+      this.done();
+
+    } else {
+
+      this.runCircleFillAnimation = true;
+      this.faceTrainingService.beginPersonGroupTraining(
+        RecognitionPersonComponent.personGroupId,
+        this.done,
+        this.working
+      );
+
+    }
+  }
+
+  private done = () => {
+    this.runCircleFillAnimation = false;
+    this.currentPlayers.reset();
+    this.router.navigate(['person']);
+  }
+
+  private working = () => {
+    // I don't care
   }
 
 }

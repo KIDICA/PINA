@@ -59,7 +59,7 @@ video.webcam-stream {
 .leftGauge {
   text-align: center;
   left: 15vw; 
-  top: 70vh; 
+  bottom: 10vh;
   position: absolute; 
   width: 20vw; 
 }

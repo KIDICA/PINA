@@ -23,7 +23,7 @@
   position: absolute; 
   width: 20vw; 
   height: 20vw;
-  padding-top: 9vw;
+  padding-top: 7vw;
 }
 
 .rightGauge {
@@ -34,7 +34,7 @@
   position: absolute; 
   width: 20vw;
   height: 20vw;
-  padding-top: 9vw;
+  padding-top: 7vw;
 }
 
 .centerCircleBorder {
@@ -58,4 +58,16 @@
   font-size: 2vw;
   line-height: 1.0;
 }
+
+.ready {
+  color: #FFF;
+  font-size: 1vw;
+  line-height: 1.5;
+  padding: 0 2vw 0 2vw; 
+  background-color: darkgreen; 
+  border-color:whitesmoke; 
+  border-radius: 5vw; 
+  border-width: 0.1vw; border-style: solid;
+}
+
 

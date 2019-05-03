@@ -5,18 +5,8 @@
   "components": {
     "header": {
       "buttons": {
-        "training": "Register",
-        "recognition": "Recognize",
-        "signOut": "Sign out"
-      }
-    },
-    "persondata": {
-      "label": {
-        "age": "Age:",
-        "name": "Name:"
-      },
-      "button": {
-        "register": "Register your face!"
+        "config": "config",
+        "signOut": "logout"
       }
     }
   },

@@ -19,13 +19,15 @@
   </div>
 
   <div [hidden]="!playerOne.isUnknownPlayerFound()" class="leftGauge largerFont">
-    HEY THERE,<br>FIRST-TIMER!
+    HEY THERE,<br>FIRST-TIMER!<br><br>
+    <span class="ready">READY</span>
   </div>
 
   <div [hidden]="!playerOne.isKnownPlayerFound()" class="leftGauge largerFont">
     WELCOME BACK!<br>
     {{playerOne.name}}<br>
-    BEST TIME: {{playerOne.time}}<br>
+    HIGHSCORE: {{playerOne.score}}<br><br>
+    <span class="ready">READY</span>
   </div>
 
   <!-- ####################################################################################################### -->
@@ -35,13 +37,15 @@
   </div>
 
   <div [hidden]="!playerTwo.isUnknownPlayerFound()" class="rightGauge largerFont">
-    HEY THERE,<br>FIRST-TIMER!
+    HEY THERE,<br>FIRST-TIMER!<br><br>
+    <span class="ready">READY</span>
   </div>
   
   <div [hidden]="!playerTwo.isKnownPlayerFound()" class="rightGauge largerFont">
     WELCOME BACK!<br>
     {{playerTwo.name}}<br>
-    BEST TIME: {{playerTwo.time}}<br>
+    BEST TIME: {{playerTwo.score}}<br><br>
+    <span class="ready">READY</span>
   </div>
 
 </div>

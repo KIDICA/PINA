@@ -4,26 +4,49 @@
 
 <video #video class="webcam-stream" autoplay playsinline></video>      
 
-<!-- ############################# Overlay ############################# -->
+<!-- ############################# Overlay Emotion ############################# -->
 
 <div [hidden]="hideOverlay" class="overlay">
-
   <div class="overlayTop">
-    <p class="textSmall">{{overlayTopMessage()}}</p>
-    <img src="{{image()}}" class="overlayImage">
-    <p class="textLarge">{{overlayMiddleMessage()}}</p>
+    <p class="textSmall">{{emotionOverlay().topMessage}}</p>
+    <img src="{{emotionOverlay().image}}" class="overlayImage">
+    <p class="textLarge">{{emotionOverlay().middleMessage}}</p>
   </div>
 
   <div class="overlayBottom">
-    <p class="textSmall">{{overlayBottomMessage()}}</p>
+    <p class="textSmall">{{emotionOverlay().bottomMessage}}</p>
     <p class="textMedium">00:0{{countDownValue}}</p>
   </div>
 </div>
 
+<!-- ############################# Overlay Score ############################# -->
+
+<div [hidden]="hideScore" class="overlay">
+
+  <div class="overlayTop">
+    <p class="textLarge">{{scoreOverlay().headline}}</p>
+  </div>
+  
+  <div class="leftGauge">
+      <p class="textMedium">{{scoreOverlay().playerOne}}</p>
+      <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
+  </div>
+
+  <div class="rightGauge">
+      <p class="textMedium">{{scoreOverlay().playerTwo}}</p>
+      <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
+  </div>
+
+  <div class="overlayBottom">
+      <p class="textSmall">{{scoreOverlay().bottomMessage}}</p>
+      <p class="textMedium">00:0{{countDownValue}}</p>
+    </div>
+
+</div>
+
 <!-- ############################# Game ############################# -->
 
-<div [hidden]="!hideOverlay" class="webcam-stream">
-
+<div [hidden]="hideGame" class="webcam-stream">
   <div class="centerMessage textMedium">{{message()}}</div>
 
   <div class="verticalLine">&nbsp;</div>
@@ -52,7 +75,7 @@
       color-plate="rgb(255, 255, 255)"
       width="200"
       height="200"
-      value="{{leftGaugeValue}}"></radial-gauge>
+      value="{{leftGaugeValue()}}"></radial-gauge>
 
   </div>
   
@@ -72,8 +95,14 @@
       width="200"
       height="200"
       animationRule="linear"
-      value="{{rightGaugeValue}}"></radial-gauge>
+      value="{{rightGaugeValue()}}"></radial-gauge>
 
     </div>
+
+
+
+
+
+
 
 </div>

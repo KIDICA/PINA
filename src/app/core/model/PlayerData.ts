@@ -6,37 +6,60 @@ export class PlayerData {
     private readonly UNKNOWN = 'unknown-player-found';
     private readonly KNOWN = 'known-player-found';
 
-    private playerFound: string = this.NO;
-    private name: string;
-    private time: string;
+    // state
+    private _personId: string;
+    private _name: string;
+    private _score: number;
+    private _playerFound: string = this.NO;
+
+    public adopt(other: PlayerData) {
+        this._playerFound = other._playerFound;
+        this._personId = other._personId;
+        this._name = other._name;
+        this._score = other._score;
+    }
 
     public noPlayerFound() {
-        this.playerFound = this.NO;
+        this._playerFound = this.NO;
     }
 
     public unkownPlayerFound() {
-        this.playerFound = this.UNKNOWN;
+        this._playerFound = this.UNKNOWN;
     }
 
-    public knownPlayerFound(name: string, time: string) {
-        this.playerFound = this.KNOWN;
-        this.name = name;
-        this.time = time;
+    public knownPlayerFound(personId: string, name: string, score: number) {
+        this._playerFound = this.KNOWN;
+        this._personId = personId;
+        this._name = name;
+        this._score = score;
+        return this;
     }
 
     public isNoPlayerFound() {
-        return this.playerFound === this.NO;
+        return this._playerFound === this.NO;
     }
 
     public isUnknownPlayerFound() {
-        return this.playerFound === this.UNKNOWN;
+        return this._playerFound === this.UNKNOWN;
     }
 
     public isKnownPlayerFound() {
-        return this.playerFound === this.KNOWN;
+        return this._playerFound === this.KNOWN;
     }
 
-    public blub() {
-        console.log('none?', this.isNoPlayerFound(), 'unknown?', this.isUnknownPlayerFound(), 'known?', this.isKnownPlayerFound());
+    get personId() {
+        return this._personId;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get score() {
+        return this._score;
+    }
+
+    set score(newScore: number) {
+        this._score = newScore;
     }
 }

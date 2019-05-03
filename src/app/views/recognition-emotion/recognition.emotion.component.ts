@@ -1,5 +1,5 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, FaceDetectionService} from '@app/services';
+import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, timer, interval, identity, Subscription} from 'rxjs';
@@ -10,6 +10,8 @@ import {FaceContainer} from '../../core/model/FaceContainer';
 import {Router} from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.service';
+import { PlayersState } from '@app/services/players.state';
+import { RecognitionPersonComponent } from '../recognition-person';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
@@ -57,29 +59,49 @@ export class RecognitionEmotionComponent implements OnInit {
   private overlaySubscription;
   private gameSubscription;
 
-  rightGaugeValue = 0;
-  leftGaugeValue = 0;
-  currentState = 0;
-  countDownValue = 5;
-  hideOverlay = false;
-  runCircleFillAnimation = false;
-  areMultipleCamerasAvailable = false;
+  rightGaugeValues: number[] = new Array();
+  leftGaugeValues: number[] = new Array();
+  rightScore: number;
+  leftScore: number;
+  currentState: number;
+  countDownValue: number;
+  hideOverlay: boolean;
+  hideScore: boolean;
+  hideGame: boolean;
+  runCircleFillAnimation: boolean;
+  areMultipleCamerasAvailable: boolean;
 
   constructor(
     private configService: ConfigService,
     private alertService: PinaAlertService,
     private rtcService: RTCService,
-    private faceDetectionService: FaceDetectionService,
+    private currentPlayers: PlayersState,
     private translateService: TranslateService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private faceApiService: AzureVisionFaceApiService
+    private faceApiService: AzureVisionFaceApiService,
+    private playerService: PlayerService
   ) { }
+
+  private reset() {
+    this.rightGaugeValues = new Array();
+    this.leftGaugeValues = new Array();
+    this.rightScore = 0;
+    this.leftScore = 0;
+    this.currentState = 0;
+    this.countDownValue = 5;
+    this.hideOverlay = true;
+    this.hideScore = true;
+    this.hideGame = true;
+    this.runCircleFillAnimation = false;
+    this.areMultipleCamerasAvailable = false;
+  }
 
   private initSuccess = () => {
     this.hideSpinnerWithDelay(1000).finally(() => {
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
+      this.reset();
       this.launchOverlaySubscriber();
     });
   }
@@ -91,7 +113,9 @@ export class RecognitionEmotionComponent implements OnInit {
   }
 
   private launchOverlaySubscriber() {
+    this.hideGame = true;
     this.hideOverlay = false;
+    this.hideScore = true;
     this.runCircleFillAnimation = false;
     this.countDownValue = 5;
     this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
@@ -104,18 +128,38 @@ export class RecognitionEmotionComponent implements OnInit {
     );
   }
 
-  private launchGameSubscriber() {
+  private launchScoreSubscriber() {
+
+    this.countDownValue = 5;
+    this.hideGame = true;
     this.hideOverlay = true;
+    this.hideScore = false;
+    this.mayUpdateHighScores();
+    this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
+      (value) => this.countDownValue--,
+      this.handleError,
+      () => {
+        this.overlaySubscription.unsubscribe();
+        this.reset();
+        this.router.navigate(['highscore']);
+      }
+    );
+  }
+
+  private launchGameSubscriber() {
+    this.hideGame = false;
+    this.hideOverlay = true;
+    this.hideScore = true;
     this.runCircleFillAnimation = true;
+    this.rightGaugeValues = [];
+    this.leftGaugeValues = [];
     this.gameSubscription = interval(1000).pipe(take(10)).subscribe(
       this.gameLogic,
       this.handleError,
       () => {
         this.gameSubscription.unsubscribe();
         if (this.currentState === 2) {
-          this.leftGaugeValue = 0;
-          this.rightGaugeValue = 0;
-          this.router.navigate(['highscore']);
+          this.launchScoreSubscriber();
         } else {
           this.currentState++;
           this.launchOverlaySubscriber();
@@ -128,9 +172,24 @@ export class RecognitionEmotionComponent implements OnInit {
     this.rtcService.takeSnapshot(this.videoElm, this.canvasElm)
       .then(image => this.faceApiService.detectFaces(image).toPromise())
       .then(response => {
-        this.leftGaugeValue = this.determineScore(response, 0);
-        this.rightGaugeValue = this.determineScore(response, 1);
+
+        let score = this.determineScore(response, 1);
+        this.leftScore += score;
+        this.leftGaugeValues.push(score);
+
+        score = this.determineScore(response, 0);
+        this.rightScore += score;
+        this.rightGaugeValues.push(score);
     });
+  }
+
+  private calculateMedian(numbers: number[]) {
+    let sum = 0;
+    if (numbers === undefined || numbers.length < 1) {
+      return sum;
+    }
+    numbers.forEach(number => sum = sum + number);
+    return Math.ceil(sum / numbers.length);
   }
 
   private determineScore(response, index) {
@@ -139,30 +198,38 @@ export class RecognitionEmotionComponent implements OnInit {
 
       // happy
       if (this.currentState === 0) {
-        return response[index].faceAttributes.emotion.happiness * 100;
+        return Math.ceil(response[index].faceAttributes.emotion.happiness * 100);
       }
 
       // angry
       if (this.currentState === 1) {
-        return response[index].faceAttributes.emotion.anger * 100;
+        return Math.ceil(response[index].faceAttributes.emotion.anger * 100);
       }
 
       // sad
       if (this.currentState === 2) {
-        return response[index].faceAttributes.emotion.sadness * 100;
+        return Math.ceil(response[index].faceAttributes.emotion.sadness * 100);
       }
     }
 
     return 0;
   }
 
-  /*
-  private calculateDimension() {
-    const width = this.leftContainer.nativeElement.clientWidth;
-    const height = this.leftContainer.nativeElement.clientHeight;
-    return {width: width, height: height};
+  private mayUpdateHighScores() {
+
+    if (this.leftScore > this.currentPlayers.currentPlayerOne.score) {
+      this.currentPlayers.currentPlayerOne.score = this.leftScore;
+      this.playerService.updatePlayer(RecognitionPersonComponent.personGroupId, this.currentPlayers.currentPlayerOne)
+        .then(t => console.log('updated score for player 1'));
+    }
+
+    if (this.rightScore > this.currentPlayers.currentPlayerTwo.score) {
+      this.currentPlayers.currentPlayerTwo.score = this.rightScore;
+      this.playerService.updatePlayer(RecognitionPersonComponent.personGroupId, this.currentPlayers.currentPlayerTwo)
+        .then(t => console.log('updated score for player 2'));
+    }
+
   }
-  */
 
   private firstVideoDeviceStream = () => {
     return this.rtcService.getVideoDeviceIds()
@@ -198,24 +265,43 @@ export class RecognitionEmotionComponent implements OnInit {
     forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.handleError);
   }
 
+  emotionOverlay() {
+    return {
+      'image': this.images[ this.currentState ],
+      'topMessage': this.overlayTopMessages[ this.currentState ],
+      'middleMessage': this.overlayMiddleMessages[ this.currentState ],
+      'bottomMessage': this.overlayBottomMessages[ this.currentState ]
+    };
+  }
+
+  scoreOverlay() {
+    return {
+      'headline': 'achieved scores',
+      'playerOne': this.currentPlayers.currentPlayerOne.name,
+      'scorePlayerOne': this.leftScore,
+      'playerTwo': this.currentPlayers.currentPlayerTwo.name,
+      'scorePlayerTwo': this.rightScore,
+      'bottomMessage': 'embrace the high scores in'
+    };
+  }
+
   image() {
     return this.images[ this.currentState ];
-  }
-
-  overlayTopMessage() {
-    return this.overlayTopMessages[ this.currentState ];
-  }
-
-  overlayMiddleMessage() {
-    return this.overlayMiddleMessages[ this.currentState ];
-  }
-
-  overlayBottomMessage() {
-    return this.overlayBottomMessages[ this.currentState ];
   }
 
   message() {
     return this.messages[ this.currentState ];
   }
 
+  leftGaugeValue() {
+    return this.calculateMedian(this.leftGaugeValues);
+  }
+
+  rightGaugeValue() {
+    return this.calculateMedian(this.rightGaugeValues);
+  }
+
+  gaugeDimension() {
+    return this.videoElm.nativeElement.clientWidth / 2;
+  }
 }

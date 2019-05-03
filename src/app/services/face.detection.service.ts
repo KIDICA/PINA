@@ -9,21 +9,20 @@ export class FaceDetectionService {
 
   constructor(
     private imageAnalyzing: AzureVisionFaceApiService,
-    private rtcService: RTCService,
-  ) { }
+    private rtcService: RTCService
+  ) {}
 
   private detectFaces = (capturedImage) => {
     return this.imageAnalyzing.detectFaces(capturedImage).toPromise();
   }
 
-  private indentifyFaces = (detectFacesResponse, personGroupId: string, data: FaceContainer) => {
+  private identifyFaces = (detectFacesResponse, personGroupId: string, data: FaceContainer) => {
 
     if (detectFacesResponse !== undefined && detectFacesResponse.length > 0) {
       detectFacesResponse.forEach(r => {
         data.addRectangle(r);
-        data.addAge(r);
-        data.addGender(r);
-        data.addEmotions(r);
+        // data.addAge(r);
+        // data.addGender(r);
       });
       return this.imageAnalyzing.identifyFaces(personGroupId, data.getFaceIds()).toPromise();
     }
@@ -38,7 +37,10 @@ export class FaceDetectionService {
       const observables = data.getPersonIds().map(personId => this.imageAnalyzing.findPerson(personGroupId, personId));
       return forkJoin(observables)
         .toPromise()
-        .then(responses => responses.forEach(person => data.addName(person)));
+        .then(responses => responses.forEach(person => {
+          data.addName(person);
+          data.addPersonData(person);
+        }));
     }
 
     return Promise.reject(new Error('no persons found'));
@@ -57,7 +59,7 @@ export class FaceDetectionService {
         .then(response => {
           return this.detectFaces(response);
         })
-        .then(response => this.indentifyFaces(response, personGroupId, data), errorHandler)
+        .then(response => this.identifyFaces(response, personGroupId, data), errorHandler)
         .then(response => this.determinePersons(response, personGroupId, data), errorHandler)
         .then(() => consumer(data));
   }
