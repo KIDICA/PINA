@@ -74,10 +74,8 @@ export class PlayerCreator {
   createNewPlayerWithRandomName(videoElm: ElementRef, canvasElm: ElementRef, isLeftPlayer: boolean, consumer: (data: PlayerData) => void) {
 
     let personId;
-    const name = this.playerService.generateRandomName();
-
-    this.faceApiService.createPerson(this.personGroupId, name, '0')
-      .toPromise()
+    this.playerService.generateRandomName(this.personGroupId)
+      .then(name => this.faceApiService.createPerson(this.personGroupId, name, '0').toPromise())
       .then(response => {
         personId = response['personId'];
         return this.addPlayer(videoElm, canvasElm, response['personId'], isLeftPlayer);

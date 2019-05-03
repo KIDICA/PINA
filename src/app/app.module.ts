@@ -8,7 +8,7 @@ import {AppComponent} from './app.component';
 import {AppRouteModule} from './app.routing';
 
 // Views
-import {PinaFooterComponent, PinaHeaderComponent, PersonDataComponent} from './core/components';
+import {PinaHeaderComponent} from './core/components';
 import {RecognitionEmotionComponent} from './views/recognition-emotion';
 import {RecognitionPersonComponent} from './views/recognition-person';
 import {LoginComponent} from './views/login';
@@ -52,14 +52,12 @@ import {GaugesModule} from 'ng-canvas-gauges';
   declarations: [
     AppComponent,
     PinaHeaderComponent,
-    PinaFooterComponent,
     RecognitionEmotionComponent,
     RecognitionPersonComponent,
     IntroductionComponent,
     LoginComponent,
     TrainingComponent,
-    HighscoreComponent,
-    PersonDataComponent
+    HighscoreComponent
   ],
   providers: [
     CustomAdalService,

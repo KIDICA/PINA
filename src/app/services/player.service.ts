@@ -13,19 +13,19 @@ export class PlayerService {
     private faceApiService: AzureVisionFaceApiService
   ) {}
 
-  generateRandomName() {
-    while (true) {
-      const temp = this.selectRandom(this.first) + this.selectRandom(this.second) + this.randomNumber();
-      if (!this.nameAlreadyExists(temp)) {
-        return temp;
-      }
-    }
+  generateRandomName(personGroupId: string) {
+    return this.findAllPlayers(personGroupId)
+      .then(players => {
+        while (true) {
+          const temp = this.selectRandom(this.first) + this.selectRandom(this.second) + this.randomNumber();
+          if (this.noPlayersWithName(temp, players)) {
+            return Promise.resolve(temp);
+          }
+      }});
   }
 
-  private nameAlreadyExists(name: string) {
-    // return Array.from(this.names.values()).filter((v, i) => name === v).length > 0;
-    // TODO querry faceApiService
-    return false;
+  private noPlayersWithName(name: string, players: PlayerData[]) {
+    return players.find(player => player.name === name) === undefined;
   }
 
   private randomNumber() {

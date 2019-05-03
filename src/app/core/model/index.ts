@@ -1,3 +1,2 @@
-﻿export * from './PersonData';
-export * from './FaceContainer';
+﻿export * from './FaceContainer';
 
