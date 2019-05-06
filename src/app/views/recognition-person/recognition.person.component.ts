@@ -14,6 +14,7 @@ import { PlayerData } from '@app/core/model/PlayerData';
 import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/services/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
+import { ConfigurationState } from '@app/services/configuration.state';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
@@ -44,7 +45,8 @@ export class RecognitionPersonComponent implements OnInit {
     private router: Router,
     private playerService: PlayerService,
     private faceApiService: AzureVisionFaceApiService,
-    private currentPlayers: PlayersState
+    private currentPlayers: PlayersState,
+    private currentConfiguration: ConfigurationState
   ) { }
 
   // TODO
@@ -61,6 +63,8 @@ export class RecognitionPersonComponent implements OnInit {
 
   private initSuccess = () => {
     this.hideSpinnerWithDelay(1000).finally(() => {
+
+      // this.recreate();
 
       // initialisation
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
@@ -187,7 +191,7 @@ export class RecognitionPersonComponent implements OnInit {
       // wait some time, then continue
       const temp = interval(3000).pipe(take(1)).subscribe(value => {
         temp.unsubscribe();
-        this.router.navigate(['emotion']);
+        this.router.navigate(['intro']);
       });
     }
   }
@@ -198,10 +202,11 @@ export class RecognitionPersonComponent implements OnInit {
   }
 
   private firstVideoDeviceStream = () => {
-    return this.rtcService.getVideoDeviceIds()
+    /* return this.rtcService.getVideoDeviceIds()
       .then(ids => ids[0])
       .then(id => this.rtcService.getConstraints(id))
-      .then(constraints => navigator.mediaDevices.getUserMedia(constraints));
+      .then(constraints => navigator.mediaDevices.getUserMedia(constraints)); */
+    return this.rtcService.createVideoDeviceStream(this.currentConfiguration.selectedVideoDeviceId);
   }
 
   private initCameraStream() {

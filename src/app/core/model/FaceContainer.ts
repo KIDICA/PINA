@@ -111,16 +111,6 @@ export class FaceContainer {
     this.personData.set(personId, personData);
   }
 
-  drawNamesAndRectangles(canvas) {
-    this.rectangles.forEach((rectangle: Rectangle, faceId: string) => {
-      // console.log('drawing', faceId, rectangle);
-      canvas.strokeRect(rectangle.left, rectangle.top, rectangle.width, rectangle.height);
-      canvas.fillText(this.determineName(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 25);
-      canvas.fillText(this.determineAge(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 50);
-      canvas.fillText(this.determineGender(faceId), rectangle.left + rectangle.width + 5, rectangle.top + 75);
-    });
-  }
-
   public singleLineResults() {
     return this.getFaceIds().map(faceId => {
       return {

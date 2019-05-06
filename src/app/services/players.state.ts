@@ -8,7 +8,6 @@ export class PlayersState {
   currentPlayerOne = new PlayerData();
   currentPlayerTwo = new PlayerData();
 
-
   reset() {
     this.trainingNeeded = false;
     this.currentPlayerOne = new PlayerData();

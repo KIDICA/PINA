@@ -16,7 +16,6 @@ export class PlayerPositionService {
     return this.getLeftPlayerFieldOfPlayWidth() < rectangle.left;
   }
 
-
   public isLeftPlayerResponse(singleFaceResponse) {
     return singleFaceResponse.faceRectangle.left + singleFaceResponse.faceRectangle.width < this.getLeftPlayerFieldOfPlayWidth();
   }

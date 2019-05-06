@@ -37,13 +37,19 @@ export class FaceDetectionService {
       const observables = data.getPersonIds().map(personId => this.imageAnalyzing.findPerson(personGroupId, personId));
       return forkJoin(observables)
         .toPromise()
-        .then(responses => responses.forEach(person => {
-          data.addName(person);
-          data.addPersonData(person);
-        }));
+        .then(responses => this.mapResponsesToFaceContainer(responses, data));
     }
 
     return Promise.reject(new Error('no persons found'));
+  }
+
+  private mapResponsesToFaceContainer = (responses, faceContainer) => {
+    if (responses !== undefined) {
+      responses.forEach(person => {
+        faceContainer.addName(person);
+        faceContainer.addPersonData(person);
+      });
+    }
   }
 
   public takeSnapshotAndDetectFaces(

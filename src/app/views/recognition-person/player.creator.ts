@@ -68,9 +68,13 @@ export class PlayerCreator {
 
     let personId;
     this.playerService.generateRandomName(this.personGroupId)
-      .then(name => this.faceApiService.createPerson(this.personGroupId, name, '0').toPromise())
+      .then(name => {
+        console.log('creating person', this.personGroupId, name, '0');
+        return this.faceApiService.createPerson(this.personGroupId, name, '0').toPromise();
+      })
       .then(response => {
         personId = response['personId'];
+        console.log('adding player', response['personId'], isLeftPlayer);
         return this.addPlayer(videoElm, canvasElm, response['personId'], isLeftPlayer);
       })
       .then(() => this.playerService.findPlayerFor(this.personGroupId, personId))

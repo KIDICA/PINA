@@ -1,0 +1,20 @@
+﻿<div [hidden]="false" style="top: 0px; left: 0px; margin: 0px; border: 0px; padding: 0px; position:absolute; width: 100%; height: 100%; background-color: black;">
+
+  <div class="egal" style="top: 10vh;">
+    <span class="whiteFont">
+      select camera:
+    </span>
+    <span class="whiteFont" *ngFor="let id of videoDeviceIds()">
+      <a (click)="selectVideoDevice(id.index)" class="{{id.selected ? 'btn selected' : 'btn'}}">{{id.index + 1}}</a>&nbsp;
+    </span>
+  </div>
+
+  <div class="egal" style="top: 20vh;">
+    <video #video autoplay playsinline></video>
+  </div>
+  
+  <div class="egal" style="bottom: 21vh;">
+    <a routerLink="person" class="btn whiteFont">back to person recognition</a>
+  </div>
+
+</div>

@@ -28,8 +28,10 @@ export class RTCService {
   }
 
   getVideoDeviceIds(): Promise<string[]> {
-    return navigator.mediaDevices.enumerateDevices()
-      .then(infos => infos.filter(info => info.kind === 'videoinput').map(info => info['deviceId']));
+    return navigator.mediaDevices
+      .enumerateDevices()
+      .then(infos => infos.filter(info => info.kind === 'videoinput')
+      .map(info => info['deviceId']));
   }
 
   getConstraints(videoDeviceId: string): MediaStreamConstraints {
@@ -41,6 +43,19 @@ export class RTCService {
         }
       }
     };
+  }
+
+  createVideoDeviceStream(videoDeviceId: string) {
+
+    if (videoDeviceId === undefined) {
+      console.log('undefined videoDeviceId handed over, switching to fallback');
+      return this.getVideoDeviceIds()
+        .then(ids => ids[0])
+        .then(id => this.getConstraints(id))
+        .then(constraints => navigator.mediaDevices.getUserMedia(constraints));
+    }
+
+    return navigator.mediaDevices.getUserMedia(this.getConstraints(videoDeviceId));
   }
 
   getNumberOfAvailableCameras() {

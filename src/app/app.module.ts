@@ -15,6 +15,7 @@ import {LoginComponent} from './views/login';
 import {TrainingComponent} from './views/training';
 import {IntroductionComponent} from './views/introduction';
 import {HighscoreComponent} from './views/highscore';
+import {ConfigurationComponent} from './views/config';
 
 import {CustomAdalGuard} from '@app/core/guards/customAdal.guard';
 import {ConfigService, CustomAdalService} from '@app/services';
@@ -55,6 +56,7 @@ import {GaugesModule} from 'ng-canvas-gauges';
     RecognitionEmotionComponent,
     RecognitionPersonComponent,
     IntroductionComponent,
+    ConfigurationComponent,
     LoginComponent,
     TrainingComponent,
     HighscoreComponent

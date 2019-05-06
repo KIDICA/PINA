@@ -2,9 +2,10 @@
 import {interval, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
-import { PlayerService, AzureVisionFaceApiService } from '@app/services';
+import { PlayerService } from '@app/services';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerData } from '@app/core/model/PlayerData';
+import { PlayersState } from '@app/services/players.state';
 
 @Component({
   templateUrl: 'highscore.component.html',
@@ -16,6 +17,7 @@ export class HighscoreComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private currentPlayers: PlayersState,
     private playerService: PlayerService
   ) {}
 
@@ -32,9 +34,17 @@ export class HighscoreComponent implements OnInit {
       (error) => { /* I dont care */ },
       () => {
         this.subscription.unsubscribe();
-        this.router.navigate(['person']);
+        this.decideWhereToGoNext();
       }
     );
+  }
+
+  private decideWhereToGoNext() {
+    if (this.currentPlayers.trainingNeeded) {
+      this.router.navigate(['training']);
+    } else {
+      this.router.navigate(['person']);
+    }
   }
 
   private mayfetchHighScores() {

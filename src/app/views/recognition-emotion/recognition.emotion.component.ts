@@ -13,6 +13,7 @@ import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.serv
 import { PlayersState } from '@app/services/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerPositionService } from '@app/services/player.position.service';
+import { ConfigurationState } from '@app/services/configuration.state';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
@@ -82,7 +83,8 @@ export class RecognitionEmotionComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router: Router,
     private faceApiService: AzureVisionFaceApiService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private configurationState: ConfigurationState
   ) { }
 
   private reset() {
@@ -250,17 +252,10 @@ export class RecognitionEmotionComponent implements OnInit {
 
   }
 
-  private firstVideoDeviceStream = () => {
-    return this.rtcService.getVideoDeviceIds()
-      .then(ids => ids[0])
-      .then(id => this.rtcService.getConstraints(id))
-      .then(constraints => navigator.mediaDevices.getUserMedia(constraints));
-  }
-
   private initCameraStream() {
     this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
     return Observable.create((observable) => {
-      this.firstVideoDeviceStream().then((stream) => {
+      this.rtcService.createVideoDeviceStream(this.configurationState.selectedVideoDeviceId).then((stream) => {
         this.videoElm.nativeElement.srcObject = stream;
         observable.next(true);
         observable.complete();
