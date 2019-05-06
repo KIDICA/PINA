@@ -12,6 +12,7 @@ import { take } from 'rxjs/operators';
 import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.service';
 import { PlayersState } from '@app/services/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
+import { PlayerPositionService } from '@app/services/player.position.service';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
@@ -58,6 +59,7 @@ export class RecognitionEmotionComponent implements OnInit {
 
   private overlaySubscription;
   private gameSubscription;
+  private playerPositionService: PlayerPositionService;
 
   rightGaugeValues: number[] = new Array();
   leftGaugeValues: number[] = new Array();
@@ -101,6 +103,7 @@ export class RecognitionEmotionComponent implements OnInit {
     this.hideSpinnerWithDelay(1000).finally(() => {
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
+      this.playerPositionService = new PlayerPositionService(this.canvasElm);
       this.reset();
       this.launchOverlaySubscriber();
     });
@@ -171,13 +174,13 @@ export class RecognitionEmotionComponent implements OnInit {
   private gameLogic = (value) => {
     this.rtcService.takeSnapshot(this.videoElm, this.canvasElm)
       .then(image => this.faceApiService.detectFaces(image).toPromise())
-      .then(response => {
+      .then((response: any[]) => {
 
-        let score = this.determineScore(response, 1);
+        let score = this.determineScore(response, true);
         this.leftScore += score;
         this.leftGaugeValues.push(score);
 
-        score = this.determineScore(response, 0);
+        score = this.determineScore(response, false);
         this.rightScore += score;
         this.rightGaugeValues.push(score);
     });
@@ -192,27 +195,43 @@ export class RecognitionEmotionComponent implements OnInit {
     return Math.ceil(sum / numbers.length);
   }
 
-  private determineScore(response, index) {
+  private determineScore(response: any[], isLeftPlayer: boolean) {
 
-    if (response !== undefined && response['length'] > index) {
+    // happy
+    if (this.currentState === 0) {
+      const emotion = this.extractEmotion(response, isLeftPlayer);
+      return emotion === undefined ? 0 : Math.ceil(emotion.happiness * 100);
+    }
 
-      // happy
-      if (this.currentState === 0) {
-        return Math.ceil(response[index].faceAttributes.emotion.happiness * 100);
-      }
+    // angry
+    if (this.currentState === 1) {
+      const emotion = this.extractEmotion(response, isLeftPlayer);
+      return emotion === undefined ? 0 : Math.ceil(emotion.anger * 100);
+    }
 
-      // angry
-      if (this.currentState === 1) {
-        return Math.ceil(response[index].faceAttributes.emotion.anger * 100);
-      }
-
-      // sad
-      if (this.currentState === 2) {
-        return Math.ceil(response[index].faceAttributes.emotion.sadness * 100);
-      }
+    // sad
+    if (this.currentState === 2) {
+      const emotion = this.extractEmotion(response, isLeftPlayer);
+      return emotion === undefined ? 0 : Math.ceil(emotion.sadness * 100);
     }
 
     return 0;
+  }
+
+  private extractEmotion(response: any[], isLeftPlayer: boolean) {
+    if (response !== undefined && response['length'] > 0) {
+      for (const r of response) {
+
+        if (isLeftPlayer && this.playerPositionService.isLeftPlayerResponse(r)) {
+          return r.faceAttributes.emotion;
+        }
+
+        if (!isLeftPlayer && this.playerPositionService.isRightPlayerResponse(r)) {
+          return r.faceAttributes.emotion;
+        }
+      }
+    }
+    return undefined;
   }
 
   private mayUpdateHighScores() {

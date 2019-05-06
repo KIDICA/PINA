@@ -13,6 +13,7 @@ import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.serv
 import { PlayerData } from '@app/core/model/PlayerData';
 import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/services/players.state';
+import { PlayerPositionService } from '@app/services/player.position.service';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
@@ -27,6 +28,7 @@ export class RecognitionPersonComponent implements OnInit {
   @ViewChild('canvasPerson') private canvasElm: ElementRef;
 
   private subscription: Subscription;
+  private playerPositionService: PlayerPositionService;
 
   playerOne = new PlayerData();
   playerTwo = new PlayerData();
@@ -63,6 +65,7 @@ export class RecognitionPersonComponent implements OnInit {
       // initialisation
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
+      this.playerPositionService = new PlayerPositionService(this.canvasElm);
 
       // launch person recognition logic
       this.subscription = interval(1000).subscribe(val => {
@@ -102,7 +105,11 @@ export class RecognitionPersonComponent implements OnInit {
     this.playerTwo.noPlayerFound();
     const faces = data.singleLineResults();
 
-    if (faces.length > 2) {
+    if (faces === undefined || faces.length === 0) {
+
+      // no faces found, nothing to do
+
+    } else if (faces.length > 2) {
 
       // TODO
       this.alertService.error('more then 2 persons found');
@@ -111,9 +118,9 @@ export class RecognitionPersonComponent implements OnInit {
 
       faces.forEach(face => {
 
-        if (this.isPlayerOne(face)) {
+        if (this.playerPositionService.isLeftPlayerRectangle(face.rectangle)) {
 
-          // Player One?
+          // left Player?
           if (face.name === FaceContainer.UNKNOWN) {
             this.playerOne.unkownPlayerFound();
           } else {
@@ -121,9 +128,9 @@ export class RecognitionPersonComponent implements OnInit {
             this.currentPlayers.currentPlayerOne = this.playerOne;
           }
 
-        } else {
+        } else if (this.playerPositionService.isRightPlayerRectangle(face.rectangle)) {
 
-          // Player Two?
+          // right player?
           if (face.name === FaceContainer.UNKNOWN) {
             this.playerTwo.unkownPlayerFound();
           } else {
@@ -142,7 +149,7 @@ export class RecognitionPersonComponent implements OnInit {
 
       const playerCreator: PlayerCreator = new PlayerCreator(
         RecognitionPersonComponent.personGroupId,
-        this.playerOneFieldOfPlayWidth(),
+        this.playerPositionService,
         this.rtcService,
         this.faceApiService,
         this.playerService);
@@ -165,10 +172,6 @@ export class RecognitionPersonComponent implements OnInit {
     }
   }
 
-  private isPlayerOne = (faceResponse) => {
-    return faceResponse.rectangle.left + faceResponse.rectangle.width < this.playerOneFieldOfPlayWidth();
-  }
-
   private isAlive() {
     return this.subscription !== undefined && !this.subscription.closed;
   }
@@ -187,12 +190,6 @@ export class RecognitionPersonComponent implements OnInit {
         this.router.navigate(['emotion']);
       });
     }
-  }
-
-  private playerOneFieldOfPlayWidth() {
-    // console.log('canvasElm.nativeElement.clientWidth', this.canvasElm.nativeElement.width);
-    // return this.videoElm.nativeElement.clientWidth / 2;
-    return this.canvasElm.nativeElement.width / 2;
   }
 
   ngOnInit() {

@@ -1,14 +1,15 @@
 ﻿import {ElementRef} from '@angular/core';
 import {RTCService} from '@app/services/rtc.service';
 import {AzureVisionFaceApiService} from '@app/services/azureVisionFaceApi.service';
-import { PlayerService } from '@app/services';
-import { PlayerData } from '@app/core/model/PlayerData';
+import {PlayerService} from '@app/services';
+import {PlayerData} from '@app/core/model/PlayerData';
+import { PlayerPositionService } from '@app/services/player.position.service';
 
 export class PlayerCreator {
 
   constructor(
     private personGroupId: string,
-    private leftPlayerFieldOfPlayWidth: number,
+    private playerPositionService: PlayerPositionService,
     private rtcService: RTCService,
     private faceApiService: AzureVisionFaceApiService,
     private playerService: PlayerService
@@ -32,13 +33,13 @@ export class PlayerCreator {
     faces.forEach(face => {
 
       // left player
-      if (isLeftPlayer && this.isLeftPlayer(face)) {
+      if (isLeftPlayer && this.playerPositionService.isLeftPlayerResponse(face)) {
         console.log('adding face for left player', this.personGroupId, personId, snapshot, this.targetFace(face));
         return this.faceApiService.addPersonFace(this.personGroupId, personId, snapshot, this.targetFace(face)).toPromise();
       }
 
       // right player
-      if (!isLeftPlayer && !this.isLeftPlayer(face)) {
+      if (!isLeftPlayer && this.playerPositionService.isRightPlayerResponse(face)) {
         console.log('adding face for right player', this.personGroupId, personId, snapshot, this.targetFace(face));
         return this.faceApiService.addPersonFace(this.personGroupId, personId, snapshot, this.targetFace(face)).toPromise();
       }
@@ -51,14 +52,6 @@ export class PlayerCreator {
             faceResponse.faceRectangle.top + ',' +
             faceResponse.faceRectangle.width + ',' +
             faceResponse.faceRectangle.height;
-  }
-
-  private isLeftPlayer = (faceResponse) => {
-    return faceResponse.faceRectangle.left + faceResponse.faceRectangle.width < this.leftPlayerFieldOfPlayWidth;
-  }
-
-  private createNewPlayer(name) {
-    return this.faceApiService.createPerson(this.personGroupId, name, '0');
   }
 
   private addPlayer(videoElm: ElementRef, canvasElm: ElementRef, personId: string, isLeftPlayer: boolean) {
