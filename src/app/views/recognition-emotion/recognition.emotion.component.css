@@ -37,6 +37,7 @@ video.webcam-stream {
   position: absolute;
   width: 100%;
   height: auto;
+  transform: scaleX(-1); /* Spiegelung */ 
 }
 
 .webcam-stream {
