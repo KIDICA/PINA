@@ -14,6 +14,7 @@ import { PlayersState } from '@app/services/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/services/configuration.state';
+import { GaugeResizeUtility } from '@app/services/gauge.resize.utility';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
@@ -108,6 +109,7 @@ export class RecognitionEmotionComponent implements OnInit {
       this.playerPositionService = new PlayerPositionService(this.canvasElm);
       this.reset();
       this.launchOverlaySubscriber();
+      GaugeResizeUtility.resizeAllRadialGauges(this.videoElm, 12);
     });
   }
 
@@ -313,9 +315,5 @@ export class RecognitionEmotionComponent implements OnInit {
 
   rightGaugeValue() {
     return this.calculateMedian(this.rightGaugeValues);
-  }
-
-  gaugeDimension() {
-    return this.videoElm.nativeElement.clientWidth / 2;
   }
 }

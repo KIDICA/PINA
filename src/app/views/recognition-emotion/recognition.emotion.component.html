@@ -1,6 +1,4 @@
-﻿<div [hidden]="true">
-  <canvas #canvas></canvas>
-</div>
+﻿<canvas #canvas [hidden]="true"></canvas>
 
 <video #video class="webcam-stream" autoplay playsinline></video>      
 
@@ -78,6 +76,12 @@
       value="{{leftGaugeValue()}}"></radial-gauge>
 
   </div>
+
+  <!-- 
+    radial gauge canvas
+    250 200 
+    375 300
+  -->
   
   <div class="rightGauge">
 
