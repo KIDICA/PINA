@@ -1,24 +1,21 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService} from '@app/services';
+import {PinaAlertService, ConfigService, PlayerService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, forkJoin, timer, interval, identity, Subscription} from 'rxjs';
+import {Observable, forkJoin, interval} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from '@environments/environment';
-import {TrainingComponent} from '../training';
-import {FaceContainer} from '../../core/model/FaceContainer';
 import {Router} from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.service';
-import { PlayersState } from '@app/services/players.state';
+import { PlayersState } from '@app/misc/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerPositionService } from '@app/services/player.position.service';
-import { ConfigurationState } from '@app/services/configuration.state';
-import { GaugeResizeUtility } from '@app/services/gauge.resize.utility';
+import { ConfigurationState } from '@app/misc/configuration.state';
+import { GaugeResizeUtility } from '@app/misc/gauge.resize.utility';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
-  styleUrls: ['recognition.emotion.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'recognition.emotion.component.css']
 })
 export class RecognitionEmotionComponent implements OnInit {
 

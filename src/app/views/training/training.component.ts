@@ -1,7 +1,7 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import { FaceTrainingService } from '@app/services';
-import { PlayersState } from '@app/services/players.state';
+import { PlayersState } from '@app/misc/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
 
 @Component({

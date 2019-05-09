@@ -1,14 +1,4 @@
-﻿video.webcam-stream {
-  margin: 0px; 
-  padding: 0px; 
-  border: 0px; 
-  position: absolute;
-  width: 100%;
-  height: auto;
-  transform: scaleX(-1);
-}
-
-.verticalLine {
+﻿.verticalLine {
   border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
   height: 50vh;
   position: absolute;
@@ -46,18 +36,6 @@
   top: 5vw;
   text-align: center;
   vertical-align: middle;
-}
-
-.largerFont {
-  color: #FFF;
-  font-size: 1.5vw;
-  line-height: 1.5;
-}
-
-.largeFont {
-  color: #FFF;
-  font-size: 2vw;
-  line-height: 1.0;
 }
 
 .ready {

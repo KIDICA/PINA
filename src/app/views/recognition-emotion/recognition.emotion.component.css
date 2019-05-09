@@ -30,16 +30,6 @@
 
 /* ############################# Game ############################# */
 
-video.webcam-stream {
-  margin: 0px; 
-  padding: 0px; 
-  border: 0px; 
-  position: absolute;
-  width: 100%;
-  height: auto;
-  transform: scaleX(-1);
-}
-
 .webcam-stream {
   margin: 0px; 
   padding: 0px; 
@@ -91,27 +81,6 @@ video.webcam-stream {
   height: 2vw;
   left: 43vw; 
   top: 2vw;
-}
-
-.textSmall {
-  text-align: center;
-  color: #FFF;
-  font-size: 2vh;
-  line-height: 1.0;
-}
-
-.textMedium {
-  text-align: center;
-  color: #FFF;
-  font-size: 4vh;
-  line-height: 1.0;
-}
-
-.textLarge {
-  text-align: center;
-  color: #FFF;
-  font-size: 6vh;
-  line-height: 1.0;
 }
 
 .centerCircleBorder {

@@ -5,11 +5,11 @@ import {take} from 'rxjs/operators';
 import { PlayerService } from '@app/services';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerData } from '@app/core/model/PlayerData';
-import { PlayersState } from '@app/services/players.state';
+import { PlayersState } from '@app/misc/players.state';
 
 @Component({
   templateUrl: 'highscore.component.html',
-  styleUrls: ['highscore.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'highscore.component.css']
 })
 export class HighscoreComponent implements OnInit {
 

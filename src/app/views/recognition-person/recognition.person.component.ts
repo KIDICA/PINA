@@ -1,24 +1,23 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService, FaceTrainingService, RCCarService} from '@app/services';
+import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, forkJoin, timer, interval, identity, Subscription} from 'rxjs';
+import {Observable, forkJoin, interval, Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from '@environments/environment';
-import {TrainingComponent} from '../training';
 import {FaceContainer} from '../../core/model/FaceContainer';
 import {Router} from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AzureVisionFaceApiService } from '@app/services/azureVisionFaceApi.service';
 import { PlayerData } from '@app/core/model/PlayerData';
 import { PlayerCreator } from './player.creator';
-import { PlayersState } from '@app/services/players.state';
+import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
-import { ConfigurationState } from '@app/services/configuration.state';
+import { ConfigurationState } from '@app/misc/configuration.state';
+import { SoundService } from '@app/services/sound.service';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
-  styleUrls: ['recognition.person.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'recognition.person.component.css']
 })
 export class RecognitionPersonComponent implements OnInit {
 
@@ -30,7 +29,7 @@ export class RecognitionPersonComponent implements OnInit {
 
   private subscription: Subscription;
   private playerPositionService: PlayerPositionService;
-
+  
   playerOne = new PlayerData();
   playerTwo = new PlayerData();
   areMultipleCamerasAvailable = false;
@@ -47,7 +46,8 @@ export class RecognitionPersonComponent implements OnInit {
     private faceApiService: AzureVisionFaceApiService,
     private currentPlayers: PlayersState,
     private currentConfiguration: ConfigurationState,
-    private rcCarService: RCCarService
+    private rcCarService: RCCarService,
+    private soundService: SoundService
   ) { }
 
   // TODO
@@ -134,6 +134,9 @@ export class RecognitionPersonComponent implements OnInit {
 
         if (this.playerPositionService.isLeftPlayerRectangle(face.rectangle)) {
 
+          // TODO
+          this.soundService.playHorseSound();
+
           // left player?
           if (face.name === FaceContainer.UNKNOWN) {
             this.playerOne.unkownPlayerFound();
@@ -143,6 +146,8 @@ export class RecognitionPersonComponent implements OnInit {
           }
 
         } else if (this.playerPositionService.isRightPlayerRectangle(face.rectangle)) {
+
+          this.soundService.playHorseSound();
 
           // right player?
           if (face.name === FaceContainer.UNKNOWN) {

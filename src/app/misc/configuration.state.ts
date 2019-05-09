@@ -1,5 +1,5 @@
 ﻿import {Injectable, OnInit} from '@angular/core';
-import { RTCService } from './rtc.service';
+import { RTCService } from '../services/rtc.service';
 
 @Injectable({providedIn: 'root'})
 export class ConfigurationState {

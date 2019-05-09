@@ -1,11 +1,11 @@
 ﻿import {Component, OnInit} from '@angular/core';
-import {interval, Subscription} from 'rxjs';
+import {interval} from 'rxjs';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 
 @Component({
   templateUrl: 'introduction.component.html',
-  styleUrls: ['introduction.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'introduction.component.css']
 })
 export class IntroductionComponent implements OnInit {
 

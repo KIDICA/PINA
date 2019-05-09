@@ -2,7 +2,7 @@
 import {Router} from '@angular/router';
 import { PinaAlertService } from '@app/services';
 import { RTCService } from '@app/services/rtc.service';
-import { ConfigurationState } from '@app/services/configuration.state';
+import { ConfigurationState } from '@app/misc/configuration.state';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
