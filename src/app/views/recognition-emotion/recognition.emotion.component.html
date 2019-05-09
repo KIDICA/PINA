@@ -26,13 +26,13 @@
   </div>
   
   <div class="leftGauge">
-      <p class="textLarge">{{scoreOverlay().playerOne}}</p>
-      <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
+    <p class="textLarge">{{scoreOverlay().playerTwo}}</p>
+    <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
   </div>
 
   <div class="rightGauge">
-      <p class="textLarge">{{scoreOverlay().playerTwo}}</p>
-      <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
+    <p class="textLarge">{{scoreOverlay().playerOne}}</p>
+    <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
   </div>
 
   <div class="overlayBottom">
@@ -73,16 +73,10 @@
       color-plate="rgb(255, 255, 255)"
       width="200"
       height="200"
-      value="{{leftGaugeValue()}}"></radial-gauge>
+      value="{{rightGaugeValue()}}"></radial-gauge>
 
   </div>
 
-  <!-- 
-    radial gauge canvas
-    250 200 
-    375 300
-  -->
-  
   <div class="rightGauge">
 
     <radial-gauge
@@ -99,14 +93,8 @@
       width="200"
       height="200"
       animationRule="linear"
-      value="{{rightGaugeValue()}}"></radial-gauge>
+      value="{{leftGaugeValue()}}"></radial-gauge>
 
     </div>
-
-
-
-
-
-
 
 </div>

@@ -14,7 +14,7 @@ export class IntroductionComponent implements OnInit {
   countDownValue = 10;
 
   public ngOnInit() {
-    this.countDownValue = 10;
+    this.countDownValue = 9;
     this.subscription = interval(1000).pipe(take(10)).subscribe(
       (value) => { this.countDownValue--; },
       (error) => { /* I dont care */ },

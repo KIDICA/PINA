@@ -10,36 +10,36 @@
 
   <!-- ####################################################################################################### -->
 
-  <div [hidden]="!playerOne.isNoPlayerFound()" class="leftGauge largerFont">
+  <div [hidden]="!playerTwo.isNoPlayerFound()" class="leftGauge largerFont">
     WAITING FOR PLAYER ONE
   </div>
 
-  <div [hidden]="!playerOne.isUnknownPlayerFound()" class="leftGauge largerFont">
+  <div [hidden]="!playerTwo.isUnknownPlayerFound()" class="leftGauge largerFont">
     HEY THERE,<br>FIRST-TIMER!<br><br>
     <span class="ready">READY</span>
   </div>
 
-  <div [hidden]="!playerOne.isKnownPlayerFound()" class="leftGauge largerFont">
+  <div [hidden]="!playerTwo.isKnownPlayerFound()" class="leftGauge largerFont">
     WELCOME BACK!<br>
-    {{playerOne.name}}<br>
-    HIGHSCORE: {{playerOne.score}}<br><br>
+    {{playerTwo.name}}<br>
+    HIGHSCORE: {{playerTwo.score}}<br><br>
     <span class="ready">READY</span>
   </div>
 
   <!-- ####################################################################################################### -->
 
-  <div [hidden]="!playerTwo.isNoPlayerFound()" class="rightGauge largerFont">
+  <div [hidden]="!playerOne.isNoPlayerFound()" class="rightGauge largerFont">
     WAITING FOR PLAYER TWO
   </div>
 
-  <div [hidden]="!playerTwo.isUnknownPlayerFound()" class="rightGauge largerFont">
+  <div [hidden]="!playerOne.isUnknownPlayerFound()" class="rightGauge largerFont">
     HEY THERE,<br>FIRST-TIMER!<br><br>
     <span class="ready">READY</span>
   </div>
   
-  <div [hidden]="!playerTwo.isKnownPlayerFound()" class="rightGauge largerFont">
+  <div [hidden]="!playerOne.isKnownPlayerFound()" class="rightGauge largerFont">
     WELCOME BACK!<br>
-    {{playerTwo.name}}<br>
-    HIGHSCORE: {{playerTwo.score}}<br><br>
+    {{playerOne.name}}<br>
+    HIGHSCORE: {{playerOne.score}}<br><br>
     <span class="ready">READY</span>
   </div>

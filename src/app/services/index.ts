@@ -5,3 +5,4 @@ export * from './face.detection.service';
 export * from './face.training.service';
 export * from './azureVisionFaceApi.service';
 export * from './player.service';
+export * from './rc.car.service';

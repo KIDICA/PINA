@@ -1,5 +1,5 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService, FaceTrainingService} from '@app/services';
+import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService, FaceTrainingService, RCCarService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, timer, interval, identity, Subscription} from 'rxjs';
@@ -46,7 +46,8 @@ export class RecognitionPersonComponent implements OnInit {
     private playerService: PlayerService,
     private faceApiService: AzureVisionFaceApiService,
     private currentPlayers: PlayersState,
-    private currentConfiguration: ConfigurationState
+    private currentConfiguration: ConfigurationState,
+    private rcCarService: RCCarService
   ) { }
 
   // TODO
@@ -81,6 +82,15 @@ export class RecognitionPersonComponent implements OnInit {
           this.analyzeError
         );
       });
+
+      /*
+      console.log('launch rc car!');
+      interval(5000).pipe(take(1)).subscribe(
+        value => this.rcCarService.fullSpeed().subscribe(r => console.log('full speed response', r)),
+        error => console.log('egal'),
+        () => this.rcCarService.stop().subscribe(r => console.log('stop response', r))
+      );
+      */
 
     });
   }
@@ -124,7 +134,7 @@ export class RecognitionPersonComponent implements OnInit {
 
         if (this.playerPositionService.isLeftPlayerRectangle(face.rectangle)) {
 
-          // left Player?
+          // left player?
           if (face.name === FaceContainer.UNKNOWN) {
             this.playerOne.unkownPlayerFound();
           } else {
@@ -141,6 +151,7 @@ export class RecognitionPersonComponent implements OnInit {
             this.playerTwo.adopt(this.playerService.buildPlayerFrom(face));
             this.currentPlayers.currentPlayerTwo = this.playerTwo;
           }
+
 
         }
       });
