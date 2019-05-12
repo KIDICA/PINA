@@ -28,7 +28,7 @@ export class HighscoreComponent implements OnInit {
     this.countDownValue = 10;
     this.subscription = interval(1000).pipe(take(10)).subscribe(
       (value) => {
-        this.mayfetchHighScores();
+        this.mayfetchHighScores(this.currentPlayers);
         this.countDownValue--;
       },
       (error) => { /* I dont care */ },
@@ -47,21 +47,13 @@ export class HighscoreComponent implements OnInit {
     }
   }
 
-  private mayfetchHighScores() {
+  private mayfetchHighScores(players: PlayersState) {
     if (this.scores === undefined) {
       this.scores = new Array(); // trigger fetch only once
       this.playerService
-        .findTop10HighScorePlayers(RecognitionPersonComponent.personGroupId)
-        .then(players => this.scores = players.map(this.mapper));
+        .findTop10HighScorePlayersIncluding(RecognitionPersonComponent.personGroupId, players.currentPlayerOne, players.currentPlayerTwo)
+        .then(results => this.scores = results);
     }
-  }
-
-  private mapper = (player: PlayerData, index: number, players: PlayerData[]) => {
-    return {
-      'place': index + 1,
-      'score': player.score,
-      'name': player.name
-    };
   }
 
   getHighscores() {

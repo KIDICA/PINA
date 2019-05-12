@@ -1,9 +1,9 @@
 ﻿import { ElementRef } from '@angular/core';
 
-export class GaugeResizeUtility {
+export class ElementResizeUtility {
 
-    static resizeAllRadialGauges(parent: ElementRef, percent: number) {
-        const gauges = document.getElementsByTagName('radial-gauge');
+    static resizeAllElements(parent: ElementRef, tagName: string, percent: number) {
+        const gauges = document.getElementsByTagName(tagName);
         const size = this.calculateWidth(parent, percent);
         for (let i = 0; i < gauges.length; i++) {
           gauges.item(i).setAttribute('width', size);

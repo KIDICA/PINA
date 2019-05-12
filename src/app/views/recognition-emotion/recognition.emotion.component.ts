@@ -11,7 +11,7 @@ import { PlayersState } from '@app/misc/players.state';
 import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
-import { GaugeResizeUtility } from '@app/misc/gauge.resize.utility';
+import { ElementResizeUtility } from '@app/misc/element.resize.utility';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
@@ -106,7 +106,7 @@ export class RecognitionEmotionComponent implements OnInit {
       this.playerPositionService = new PlayerPositionService(this.canvasElm);
       this.reset();
       this.launchOverlaySubscriber();
-      GaugeResizeUtility.resizeAllRadialGauges(this.videoElm, 12);
+      ElementResizeUtility.resizeAllElements(this.videoElm, 'radial-gauge', 12);
     });
   }
 
@@ -294,7 +294,9 @@ export class RecognitionEmotionComponent implements OnInit {
       'scorePlayerOne': this.leftScore,
       'playerTwo': this.currentPlayers.currentPlayerTwo.name,
       'scorePlayerTwo': this.rightScore,
-      'bottomMessage': 'embrace the high scores in'
+      'bottomMessage': 'embrace the high scores in',
+      'playOneIsWinner': this.leftScore >= this.rightScore,
+      'playTwoIsWinner': this.rightScore >= this.leftScore
     };
   }
 

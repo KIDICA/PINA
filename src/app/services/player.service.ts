@@ -1,4 +1,4 @@
-﻿import {Injectable} from '@angular/core';
+﻿import {Injectable, Output} from '@angular/core';
 import {PlayerData} from '@app/core/model/PlayerData';
 import { AzureVisionFaceApiService } from './azureVisionFaceApi.service';
 import { map } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class PlayerService {
 
   findPlayerFor(personGroupId: string, personId: string): Promise<PlayerData> {
     return this.faceApiService.findPerson(personGroupId, personId)
-      .pipe(map(this.mapper))
+      .pipe(map(this.responseToPlayerMapper))
       .toPromise();
   }
 
@@ -62,9 +62,46 @@ export class PlayerService {
     return this.faceApiService
       .findPersons(personGroupId)
       .toPromise()
-      .then((responses: []) => Promise.resolve(responses.map(this.mapper)));
+      .then((responses: []) => responses.map(this.responseToPlayerMapper));
   }
 
+  findTop10HighScorePlayersIncluding(personGroupId: string, playerOne: PlayerData, playerTwo: PlayerData) {
+    return this.faceApiService
+      .findPersons(personGroupId)
+      .toPromise()
+      .then((respones: any[]) => respones.map(this.responseToPlayerMapper))
+      .then((players: PlayerData[]) => players.filter(p => p.personId !== playerOne.personId && p.personId !== playerTwo.personId))
+      .then((players: PlayerData[]) => {
+        players.push(playerOne);
+        players.push(playerTwo);
+        return players;
+      })
+      .then((players: PlayerData[]) => {
+        this.sort(players);
+        return players;
+      })
+      .then((players: PlayerData[]) => players.map(this.advancedMapper(playerOne, playerTwo)))
+      .then((output: any[]) => output.filter(o => o.mayIgnore === false));
+  }
+
+  private advancedMapper = (pOne: PlayerData, pTwo: PlayerData) => (player: PlayerData, index: number, players: PlayerData[]) => {
+    return {
+      'index':  index + 1,
+      'player': player,
+      'mayIgnore': index > 9 && !(pOne.personId === player.personId || pTwo.personId === player.personId),
+      'fresh': pOne.personId === player.personId || pTwo.personId === player.personId
+    };
+  }
+
+  private responseToPlayerMapper = response => {
+    return new PlayerData().knownPlayerFound(response['personId'], response['name'], response['userData']);
+  }
+
+  private sort(playerData: PlayerData[]) {
+    playerData.sort((a, b) => b.score - a.score);
+  }
+
+  /*
   findTop10HighScorePlayers(personGroupId: string) {
     return this.faceApiService
       .findPersons(personGroupId)
@@ -76,11 +113,6 @@ export class PlayerService {
       });
   }
 
-
-  private mapper = response => {
-    return new PlayerData().knownPlayerFound(response['personId'], response['name'], response['userData']);
-  }
-
   private takeFirst10 = (player: PlayerData, index: number, players: PlayerData[]) => {
     return index < 10;
   }
@@ -88,5 +120,5 @@ export class PlayerService {
   private sort(playerData: PlayerData[]) {
     playerData.sort((a, b) => b.score - a.score);
   }
-
+  */
 }

@@ -26,12 +26,16 @@
   </div>
   
   <div class="leftGauge">
-    <p class="textLarge">{{scoreOverlay().playerTwo}}</p>
+    <p [hidden]="!scoreOverlay().playTwoIsWinner" class="textLarge">WINNER</p>
+    <p [hidden]="!scoreOverlay().playTwoIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p class="textMedium">{{scoreOverlay().playerTwo}}</p>
     <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
   </div>
 
   <div class="rightGauge">
-    <p class="textLarge">{{scoreOverlay().playerOne}}</p>
+    <p [hidden]="!scoreOverlay().playOneIsWinner" class="textLarge">WINNER</p>
+    <p [hidden]="!scoreOverlay().playOneIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p class="textMedium">{{scoreOverlay().playerOne}}</p>
     <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
   </div>
 
@@ -71,8 +75,8 @@
         {"from": 75, "to": 100, "color": "rgb(223, 111, 92)"} 
       ]'
       color-plate="rgb(255, 255, 255)"
-      width="200"
-      height="200"
+      width="500"
+      height="500"
       value="{{rightGaugeValue()}}"></radial-gauge>
 
   </div>
@@ -90,8 +94,8 @@
         {"from": 75, "to": 100, "color": "rgb(223, 111, 92)"} 
       ]'
       color-plate="rgb(255, 255, 255)"
-      width="200"
-      height="200"
+      width="500"
+      height="500"
       animationRule="linear"
       value="{{leftGaugeValue()}}"></radial-gauge>
 

@@ -14,9 +14,10 @@
     </div>
 
     <div class="row" *ngFor="let score of getHighscores()"> 
-      <div class="firstCell">{{score.place}}</div>
-      <div class="secondCell">{{score.score}}</div>
-      <div class="thirdCell">{{score.name}}</div>
+      <div class="firstCell">{{score.index}}</div>
+      <div class="secondCell">{{score.player.score}}</div>
+      <div *ngIf="score.fresh" class="thirdCell">*** {{score.player.name}} ***</div>
+      <div *ngIf="!score.fresh" class="thirdCell">{{score.player.name}}</div>
     </div>
 
   </div>
