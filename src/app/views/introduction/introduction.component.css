@@ -4,27 +4,14 @@
   width: 100%;
 }
 
-.left {
-  left: 10vw; 
-  top: 20vh; 
-  position: absolute; 
-  width: 30vw;
-  height: 45vh;
-}
-
-.right {
-  right: 10vw; 
-  top: 20vh; 
-  position: absolute; 
-  width: 30vw;
-  height: 45vh;
-  text-align: center;
+.highLine {
+  line-height: 5vh;
 }
 
 .centerMessage {
   position: absolute;
-  width: 14vw; 
-  height: 2vw;
-  left: 43vw; 
-  top: 2vw;
+  width: 80vw; 
+  left: 10vw; 
+  top: 5vh;
+  text-align: center;
 }

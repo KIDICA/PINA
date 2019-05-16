@@ -1,13 +1,4 @@
-﻿.floatLeft {
-  float: left;
-}
-
-.whiteFont {
-  color: #FFFFFF !important;
-  font-size: 2vh;
-}
-
-.egal {
+﻿.egal {
   position:absolute; 
   right: 20vw; 
   width: 60vw;
@@ -22,4 +13,14 @@
 
 .selected {
   background-color: deeppink !important;
+}
+
+.box {
+  border: 3px dotted white;
+  border-radius: 15px; 
+  position: absolute; 
+  width: 40vw; 
+  height: 40vh; 
+  top: 15vh;
+  text-align: center;
 }

@@ -1,5 +1,5 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService} from '@app/services';
+import {SoundService, PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, interval, Subscription} from 'rxjs';
@@ -13,7 +13,6 @@ import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
-import { SoundService } from '@app/services/sound.service';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
@@ -29,7 +28,7 @@ export class RecognitionPersonComponent implements OnInit {
 
   private subscription: Subscription;
   private playerPositionService: PlayerPositionService;
-  
+
   playerOne = new PlayerData();
   playerTwo = new PlayerData();
   areMultipleCamerasAvailable = false;
@@ -66,6 +65,7 @@ export class RecognitionPersonComponent implements OnInit {
     this.hideSpinnerWithDelay(1000).finally(() => {
 
       // this.recreate();
+      this.soundService.playMusic();
 
       // initialisation
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
@@ -82,15 +82,6 @@ export class RecognitionPersonComponent implements OnInit {
           this.analyzeError
         );
       });
-
-      /*
-      console.log('launch rc car!');
-      interval(5000).pipe(take(1)).subscribe(
-        value => this.rcCarService.fullSpeed().subscribe(r => console.log('full speed response', r)),
-        error => console.log('egal'),
-        () => this.rcCarService.stop().subscribe(r => console.log('stop response', r))
-      );
-      */
 
     });
   }
@@ -114,6 +105,12 @@ export class RecognitionPersonComponent implements OnInit {
   }
 
   private mapFoundFaces(data: FaceContainer) {
+
+    // remember state just for playing sound
+    const noPlayer1FoundBefore = this.currentPlayers.currentPlayerOne.isNoPlayerFound();
+    const noPlayer2FoundBefore = this.currentPlayers.currentPlayerTwo.isNoPlayerFound();
+
+    // reset state and run new recognition
     this.currentPlayers.reset();
     this.playerOne.noPlayerFound();
     this.playerTwo.noPlayerFound();
@@ -134,8 +131,7 @@ export class RecognitionPersonComponent implements OnInit {
 
         if (this.playerPositionService.isLeftPlayerRectangle(face.rectangle)) {
 
-          // TODO
-          this.soundService.playHorseSound();
+          this.mayPlaySound(noPlayer1FoundBefore);
 
           // left player?
           if (face.name === FaceContainer.UNKNOWN) {
@@ -147,7 +143,7 @@ export class RecognitionPersonComponent implements OnInit {
 
         } else if (this.playerPositionService.isRightPlayerRectangle(face.rectangle)) {
 
-          this.soundService.playHorseSound();
+          this.mayPlaySound(noPlayer2FoundBefore);
 
           // right player?
           if (face.name === FaceContainer.UNKNOWN) {
@@ -157,9 +153,14 @@ export class RecognitionPersonComponent implements OnInit {
             this.currentPlayers.currentPlayerTwo = this.playerTwo;
           }
 
-
         }
       });
+    }
+  }
+
+  private mayPlaySound(noPlayerFoundBefore) {
+    if (noPlayerFoundBefore) {
+      this.soundService.playPlayerRecognized();
     }
   }
 
@@ -218,10 +219,6 @@ export class RecognitionPersonComponent implements OnInit {
   }
 
   private firstVideoDeviceStream = () => {
-    /* return this.rtcService.getVideoDeviceIds()
-      .then(ids => ids[0])
-      .then(id => this.rtcService.getConstraints(id))
-      .then(constraints => navigator.mediaDevices.getUserMedia(constraints)); */
     return this.rtcService.createVideoDeviceStream(this.currentConfiguration.selectedVideoDeviceId);
   }
 

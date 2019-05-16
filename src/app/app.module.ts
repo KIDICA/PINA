@@ -2,7 +2,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
-import {ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {AppRouteModule} from './app.routing';
@@ -36,6 +36,7 @@ import {GaugesModule} from 'ng-canvas-gauges';
     NgxSpinnerModule,
     PinaAlertModule,
     ReactiveFormsModule,
+    FormsModule,
     GaugesModule,
     TranslateModule.forRoot({
       compiler: {

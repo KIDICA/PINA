@@ -47,6 +47,38 @@
   top: 24vw;
 }
 
+.leftVerticalLine {
+  border-right: 1.5vw solid  rgba(223, 111, 92, 1);
+  position: absolute;
+  left: 48vw;
+  bottom: 5vh;
+}
+
+.leftScore {
+  position: absolute; 
+  left: 44.5vw; 
+  width: 5vw; 
+  height: 2vh;
+  bottom: 5vh; 
+  text-align: right;
+}
+
+.rightScore {
+  position: absolute; 
+  right: 44.5vw; 
+  width: 5vw; 
+  height: 2vh;
+  bottom: 5vh; 
+  text-align: left;
+}
+
+.rightVerticalLine {
+  border-left: 1.5vw solid  rgba(76, 154, 42, 1);
+  position: absolute;
+  right: 48vw;
+  bottom: 5vh;
+}
+
 .leftGauge {
   text-align: center;
   left: 15vw; 

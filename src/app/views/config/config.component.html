@@ -1,20 +1,28 @@
-﻿<div [hidden]="false" style="top: 0px; left: 0px; margin: 0px; border: 0px; padding: 0px; position:absolute; width: 100%; height: 100%; background-color: black;">
+﻿<div class="theDarkness">
 
-  <div class="egal" style="top: 10vh;">
-    <span class="whiteFont">
-      select camera:
+  <div class="box textSmall" style="left: 5vw">
+    <br>CAMERA CONFIGURATION<br><br>
+    select camera&nbsp;&rarr;&nbsp;
+    <span *ngFor="let id of videoDeviceIds()">
+      <a (click)="selectVideoDevice(id.index)"
+        class="{{id.selected ? 'btn selected' : 'btn'}}">{{id.index + 1}}</a>&nbsp;
     </span>
-    <span class="whiteFont" *ngFor="let id of videoDeviceIds()">
-      <a (click)="selectVideoDevice(id.index)" class="{{id.selected ? 'btn selected' : 'btn'}}">{{id.index + 1}}</a>&nbsp;
-    </span>
+    <br><br>
+    <video #video autoplay playsinline style="height: 20vh; width: auto;"></video>
+
+
   </div>
 
-  <div class="egal" style="top: 20vh;">
-    <video #video autoplay playsinline></video>
+  <div class="box textSmall" style="right: 5vw">
+    <br>RC CAR CONFIGURATION <br><br>
+    RC Car 1: <input size="30" [(ngModel)]="configurationState.rcCar1Uri"><br><br>
+    RC Car 2: <input size="30" [(ngModel)]="configurationState.rcCar2Uri"><br><br>
+    <a (click)="testRCCars()" class="btn">start test run</a><br><br>
+    <a (click)="stopRCCars()" class="btn">stop all cars</a>
   </div>
-  
+
   <div class="egal" style="bottom: 21vh;">
-    <a routerLink="person" class="btn whiteFont">back to person recognition</a>
+    <a routerLink="person" class="btn textSmall">back to person recognition</a>
   </div>
 
 </div>

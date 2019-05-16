@@ -36,5 +36,17 @@ video.webcam-stream {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color:#383633;
+}
+
+/* ############################# Player Colors ############################# */
+
+/* do not forget recognition.emotion.component.css */
+
+.redText {
+  color: rgba(223, 111, 92, 1);
+}
+
+.greenText {
+  color: rgba(76, 154, 42, 1);
 }

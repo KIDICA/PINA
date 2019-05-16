@@ -89,7 +89,8 @@ export class PlayerService {
       'index':  index + 1,
       'player': player,
       'mayIgnore': index > 9 && !(pOne.personId === player.personId || pTwo.personId === player.personId),
-      'fresh': pOne.personId === player.personId || pTwo.personId === player.personId
+      'isPlayerOne': pOne.personId === player.personId,
+      'isPlayerTwo': pTwo.personId === player.personId
     };
   }
 

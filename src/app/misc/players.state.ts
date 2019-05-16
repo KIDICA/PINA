@@ -10,8 +10,12 @@ export class PlayersState {
 
   reset() {
     this.trainingNeeded = false;
+
     this.currentPlayerOne = new PlayerData();
+    this.currentPlayerOne.noPlayerFound();
+
     this.currentPlayerTwo = new PlayerData();
+    this.currentPlayerTwo.noPlayerFound();
   }
 
 }

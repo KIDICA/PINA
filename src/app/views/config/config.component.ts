@@ -1,15 +1,17 @@
 ﻿import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import { PinaAlertService } from '@app/services';
+import { PinaAlertService, RCCarService } from '@app/services';
 import { RTCService } from '@app/services/rtc.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
+import { RCCarsState } from '@app/misc/rc.cars.state';
+import { take } from 'rxjs/operators';
 
 @Component({
   templateUrl: 'config.component.html',
-  styleUrls: ['config.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'config.component.css']
 })
 export class ConfigurationComponent implements OnInit {
 
@@ -23,7 +25,8 @@ export class ConfigurationComponent implements OnInit {
     private translateService: TranslateService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private configurationState: ConfigurationState
+    public configurationState: ConfigurationState,
+    private rcCarService: RCCarService
   ) {}
 
   ngOnInit() {
@@ -39,6 +42,16 @@ export class ConfigurationComponent implements OnInit {
         'selected': value === this.configurationState.selectedVideoDeviceId
       };
     });
+  }
+
+  testRCCars() {
+    this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 30);
+    this.rcCarService.accelerate(this.configurationState.rcCar2Uri, 30);
+  }
+
+  stopRCCars() {
+    this.rcCarService.stop(this.configurationState.rcCar1Uri);
+    this.rcCarService.stop(this.configurationState.rcCar2Uri);
   }
 
   selectVideoDevice(index: number) {

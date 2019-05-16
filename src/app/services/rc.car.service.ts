@@ -23,18 +23,22 @@ export class RCCarService {
         };
     }
 
-    // curl -XPUT -d '{"speed":"0", "direction": "1"}' http://192.168.1.113:8038/motor 
-
-    fullSpeed() {
-        const uri  = 'http://192.168.1.113:8038/motor';
-        const body = this.speedyBody(500);
-        return this.http.put(uri, body);
+    /** 0 bis 100 */
+    accelerate(uri: string, speed: number) {
+        console.log('accelerate', uri, speed);
+        const body = this.speedyBody(this.rangedValue(speed));
+        console.log('accerlerate', uri, body);
+        return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
     }
 
-    stop() {
-        const uri  = 'http://192.168.1.113:8038/motor';
+    stop(uri: string) {
+        console.log('stop', uri, 0);
         const body = this.speedyBody(0);
-        return this.http.put(uri, body);
+        return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
+    }
+
+    private NOTHINGNESS = response => {
+        // nothing
     }
 
     private speedyBody(speed) {
@@ -42,5 +46,13 @@ export class RCCarService {
             'speed': speed,
             'direction': 1
         };
+    }
+
+    /** 0,100 ==> 300,1000 */
+    private rangedValue(speed) {
+        let output = speed * 10;
+        output = Math.max(300, output);
+        output = Math.min(1000, output);
+        return output;
     }
 }

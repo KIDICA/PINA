@@ -1,5 +1,5 @@
 ﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {PinaAlertService, ConfigService, PlayerService} from '@app/services';
+import {PinaAlertService, ConfigService, PlayerService, SoundService, RCCarService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, interval} from 'rxjs';
@@ -82,7 +82,9 @@ export class RecognitionEmotionComponent implements OnInit {
     private router: Router,
     private faceApiService: AzureVisionFaceApiService,
     private playerService: PlayerService,
-    private configurationState: ConfigurationState
+    private configurationState: ConfigurationState,
+    private soundService: SoundService,
+    private rcCarService: RCCarService
   ) { }
 
   private reset() {
@@ -122,6 +124,8 @@ export class RecognitionEmotionComponent implements OnInit {
     this.hideScore = true;
     this.runCircleFillAnimation = false;
     this.countDownValue = 5;
+    this.soundService.playChangePhase();
+    this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 1);
     this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
       (value) => { this.countDownValue--; },
       this.handleError,
@@ -133,17 +137,18 @@ export class RecognitionEmotionComponent implements OnInit {
   }
 
   private launchScoreSubscriber() {
-
     this.countDownValue = 5;
     this.hideGame = true;
     this.hideOverlay = true;
     this.hideScore = false;
     this.mayUpdateHighScores();
+    this.rcCarService.stop(this.configurationState.rcCar1Uri);
     this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
       (value) => this.countDownValue--,
       this.handleError,
       () => {
         this.overlaySubscription.unsubscribe();
+        this.adoptCurrentHighScores();
         this.reset();
         this.router.navigate(['highscore']);
       }
@@ -157,10 +162,12 @@ export class RecognitionEmotionComponent implements OnInit {
     this.runCircleFillAnimation = true;
     this.rightGaugeValues = [];
     this.leftGaugeValues = [];
+    this.soundService.playRaceStart();
     this.gameSubscription = interval(1000).pipe(take(10)).subscribe(
       this.gameLogic,
       this.handleError,
       () => {
+        this.soundService.playRaceEnd();
         this.gameSubscription.unsubscribe();
         if (this.currentState === 2) {
           this.launchScoreSubscriber();
@@ -178,6 +185,10 @@ export class RecognitionEmotionComponent implements OnInit {
       .then((response: any[]) => {
 
         let score = this.determineScore(response, true);
+
+        // TODO
+        this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 100);
+
         this.leftScore += score;
         this.leftGaugeValues.push(score);
 
@@ -251,6 +262,11 @@ export class RecognitionEmotionComponent implements OnInit {
 
   }
 
+  private adoptCurrentHighScores() {
+    this.currentPlayers.currentPlayerOne.score = this.leftScore;
+    this.currentPlayers.currentPlayerTwo.score = this.rightScore;
+  }
+
   private initCameraStream() {
     this.rtcService.stopAllCurrentlyRunningStreams(this.videoElm);
     return Observable.create((observable) => {
@@ -271,6 +287,12 @@ export class RecognitionEmotionComponent implements OnInit {
 
   private async hideSpinnerWithDelay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => this.spinner.hide());
+  }
+
+  private determineBarHeight(score: number) {
+    let temp = score === undefined || score === 0 ? 1 : Math.max(score, 1);
+    temp = Math.max(1, (temp / 2000) * 50);
+    return temp;
   }
 
   ngOnInit() {
@@ -300,19 +322,19 @@ export class RecognitionEmotionComponent implements OnInit {
     };
   }
 
-  image() {
-    return this.images[ this.currentState ];
+  gameOverlay() {
+    return {
+      'image': this.images[ this.currentState ],
+      'message': this.messages[ this.currentState ],
+      'playerOne': this.currentPlayers.currentPlayerOne.name,
+      'playerTwo': this.currentPlayers.currentPlayerTwo.name,
+      'scorePlayerOne': this.leftScore,
+      'scorePlayerTwo': this.rightScore,
+      'leftGaugeValue': this.calculateMedian(this.leftGaugeValues),
+      'rightGaugeValue': this.calculateMedian(this.rightGaugeValues),
+      'leftBarHeight': this.determineBarHeight(this.rightScore),
+      'rightBarHeight': this.determineBarHeight(this.leftScore)
+    };
   }
 
-  message() {
-    return this.messages[ this.currentState ];
-  }
-
-  leftGaugeValue() {
-    return this.calculateMedian(this.leftGaugeValues);
-  }
-
-  rightGaugeValue() {
-    return this.calculateMedian(this.rightGaugeValues);
-  }
 }
