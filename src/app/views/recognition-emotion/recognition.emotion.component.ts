@@ -184,11 +184,12 @@ export class RecognitionEmotionComponent implements OnInit {
       .then(image => this.faceApiService.detectFaces(image).toPromise())
       .then((response: any[]) => {
 
+        if (this.gameSubscription === undefined || this.gameSubscription.closed) {
+          return;
+        }
+
         let score = this.determineScore(response, true);
-
-        // TODO
-        this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 100);
-
+        this.rcCarService.accelerate(this.configurationState.rcCar1Uri, score);
         this.leftScore += score;
         this.leftGaugeValues.push(score);
 

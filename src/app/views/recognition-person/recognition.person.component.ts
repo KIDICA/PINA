@@ -13,6 +13,7 @@ import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
+import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
@@ -66,6 +67,8 @@ export class RecognitionPersonComponent implements OnInit {
 
       // this.recreate();
       this.soundService.playMusic();
+
+this.rcCarService.stop(this.currentConfiguration.rcCar1Uri);
 
       // initialisation
       this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));

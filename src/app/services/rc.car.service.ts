@@ -17,22 +17,13 @@ export class RCCarService {
         private http: HttpClient
     ) {}
 
-    private headers() {
-        return {
-            [HTTP_HEADER_CONTENT_TYPE_NAME]: [HTTP_HEADER_CONTENT_TYPE_VALUE_APPLICATION_JSON]
-        };
-    }
-
     /** 0 bis 100 */
     accelerate(uri: string, speed: number) {
-        console.log('accelerate', uri, speed);
         const body = this.speedyBody(this.rangedValue(speed));
-        console.log('accerlerate', uri, body);
         return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
     }
 
     stop(uri: string) {
-        console.log('stop', uri, 0);
         const body = this.speedyBody(0);
         return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
     }
