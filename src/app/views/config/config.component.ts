@@ -34,16 +34,6 @@ export class ConfigurationComponent implements OnInit {
     this.initCameraStream(this.firstVideoDeviceStream()).subscribe(this.initSuccess, this.initError);
   }
 
-  videoDeviceIds() {
-    return this.availableVideoDeviceIds.map((value, index, values) => {
-      return {
-        'index': index,
-        'id': value,
-        'selected': value === this.configurationState.selectedVideoDeviceId
-      };
-    });
-  }
-
   testRCCars() {
     this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 30);
     this.rcCarService.accelerate(this.configurationState.rcCar2Uri, 30);
@@ -52,6 +42,35 @@ export class ConfigurationComponent implements OnInit {
   stopRCCars() {
     this.rcCarService.stop(this.configurationState.rcCar1Uri);
     this.rcCarService.stop(this.configurationState.rcCar2Uri);
+  }
+
+  operatingModes() {
+    return [
+      {
+        'value': false,
+        'label': 'continue via countdown',
+        'selected': !this.configurationState.pressKeyToContinue
+      }, {
+        'value': true,
+        'label': 'continue via button press',
+        'selected': this.configurationState.pressKeyToContinue
+      }
+    ];
+  }
+
+  selectOperatingMode(newMode: boolean) {
+    this.configurationState.pressKeyToContinue = newMode;
+    console.log('configurationState', this.configurationState.pressKeyToContinue);
+  }
+
+  videoDeviceIds() {
+    return this.availableVideoDeviceIds.map((value, index, values) => {
+      return {
+        'index': index,
+        'id': value,
+        'selected': value === this.configurationState.selectedVideoDeviceId
+      };
+    });
   }
 
   selectVideoDevice(index: number) {

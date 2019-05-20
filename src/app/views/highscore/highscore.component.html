@@ -23,9 +23,14 @@
 
   </div>
 
-  <div class="bottom">
-    <p class="textSmall">Continuing in</p>
+  <div class="bottom" [hidden]='hideCountdown()'>
+    <p class="textSmall">continuing in</p>
     <p class="textMedium">00:0{{countDownValue}}</p>
   </div>
+
+  <div class="bottom" [hidden]='!hideCountdown()'>
+    <p class="textSmall">press a button to continue</p>
+  </div>
+
 
 </div>

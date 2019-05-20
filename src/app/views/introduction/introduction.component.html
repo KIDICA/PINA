@@ -14,9 +14,13 @@
 
   </div>
 
-  <div class="bottom">
+  <div class="bottom" [hidden]="hideCountDown">
     <p class="textSmall">Game starts in</p>
     <p class="textMedium">00:0{{countDownValue}}</p>
+  </div>
+
+  <div class="bottom" [hidden]="!hideCountDown">
+    <p class="textSmall">press a button to continue</p>
   </div>
 
 </div>

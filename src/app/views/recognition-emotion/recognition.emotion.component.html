@@ -13,7 +13,7 @@
 
   <div class="overlayBottom">
     <p class="textSmall">{{emotionOverlay().bottomMessage}}</p>
-    <p class="textMedium">00:0{{countDownValue}}</p>
+    <p class="textMedium" [hidden]="[emotionOverlay().hideCountDown]">00:0{{countDownValue}}</p>
   </div>
 </div>
 
@@ -41,7 +41,7 @@
 
   <div class="overlayBottom">
       <p class="textSmall">{{scoreOverlay().bottomMessage}}</p>
-      <p class="textMedium">00:0{{countDownValue}}</p>
+      <p class="textMedium" [hidden]="[scoreOverlay().hideCountDown]">00:0{{countDownValue}}</p>
     </div>
 
 </div>

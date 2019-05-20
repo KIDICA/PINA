@@ -12,14 +12,14 @@
 }
 
 .selected {
-  background-color: deeppink !important;
+  background-color: indianred !important;
 }
 
 .box {
   border: 3px dotted white;
   border-radius: 15px; 
   position: absolute; 
-  width: 40vw; 
+  width: 28vw; 
   height: 40vh; 
   top: 15vh;
   text-align: center;

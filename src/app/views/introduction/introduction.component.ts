@@ -2,28 +2,44 @@
 import {interval} from 'rxjs';
 import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
+import { ConfigurationState } from '@app/misc/configuration.state';
+import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'introduction.component.html',
   styleUrls: ['../../../assets/css/global.css', 'introduction.component.css']
 })
-export class IntroductionComponent implements OnInit {
+export class IntroductionComponent extends KeyListeningComponent implements OnInit {
 
-  private subscription;
-  constructor( private router: Router ) {}
-  countDownValue = 10;
+  constructor(
+    private router: Router,
+    private configurationState: ConfigurationState,
+    protected currentConfiguration: ConfigurationState
+  ) {
+    super(currentConfiguration);
+    this.hideCountDown = configurationState.pressKeyToContinue;
+  }
 
-  public ngOnInit() {
-    this.countDownValue = 9;
-    this.subscription = interval(1000).pipe(take(10)).subscribe(
-      (value) => { this.countDownValue--; },
-      (error) => { /* I dont care */ },
-      () => {
-        this.subscription.unsubscribe();
-        this.router.navigate(['emotion']);
-      }
-    );
+  hideCountDown;
+  countDownValue;
 
+  ngOnInit() {
+    if (!this.configurationState.pressKeyToContinue) {
+      this.countDownValue = 9;
+      interval(1000).pipe(take(10)).subscribe(
+        (value) => { this.countDownValue--; },
+        (error) => { /* I dont care */ },
+        this.introDone
+      );
+    }
+  }
+
+  handleKeyDown(event) {
+    this.introDone();
+  }
+
+  private introDone = () => {
+    this.router.navigate(['emotion']);
   }
 
 }

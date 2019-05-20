@@ -12,19 +12,16 @@ import { RecognitionPersonComponent } from '../recognition-person';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
 import { ElementResizeUtility } from '@app/misc/element.resize.utility';
+import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'recognition.emotion.component.html',
   styleUrls: ['../../../assets/css/global.css', 'recognition.emotion.component.css']
 })
-export class RecognitionEmotionComponent implements OnInit {
+export class RecognitionEmotionComponent extends KeyListeningComponent implements OnInit {
 
   @ViewChild('video') private videoElm: ElementRef;
   @ViewChild('canvas') private canvasElm: ElementRef;
-
-  /*
-  @ViewChild('leftContainer') private leftContainer: ElementRef;
-  */
 
   private readonly images = [
     '/assets/images/emoji_happy_large.png',
@@ -85,7 +82,9 @@ export class RecognitionEmotionComponent implements OnInit {
     private configurationState: ConfigurationState,
     private soundService: SoundService,
     private rcCarService: RCCarService
-  ) { }
+  ) {
+    super(configurationState);
+  }
 
   private reset() {
     this.rightGaugeValues = new Array();
@@ -103,7 +102,6 @@ export class RecognitionEmotionComponent implements OnInit {
 
   private initSuccess = () => {
     this.hideSpinnerWithDelay(1000).finally(() => {
-      this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
       this.playerPositionService = new PlayerPositionService(this.canvasElm);
       this.reset();
@@ -119,43 +117,58 @@ export class RecognitionEmotionComponent implements OnInit {
   }
 
   private launchOverlaySubscriber() {
+
     this.hideGame = true;
     this.hideOverlay = false;
     this.hideScore = true;
     this.runCircleFillAnimation = false;
-    this.countDownValue = 5;
     this.soundService.playChangePhase();
-    this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 1);
-    this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
-      (value) => { this.countDownValue--; },
-      this.handleError,
-      () => {
-        this.overlaySubscription.unsubscribe();
-        this.launchGameSubscriber();
-      }
-    );
+
+    if (!this.configurationState.pressKeyToContinue) {
+      this.countDownValue = 5;
+      this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 1);
+      this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
+        (value) => { this.countDownValue--; },
+        this.handleError,
+        () => {
+          this.overlaySubscription.unsubscribe();
+          this.launchGameSubscriber();
+        }
+      );
+
+    }
   }
 
   private launchScoreSubscriber() {
+
     this.countDownValue = 5;
     this.hideGame = true;
     this.hideOverlay = true;
     this.hideScore = false;
     this.mayUpdateHighScores();
     this.rcCarService.stop(this.configurationState.rcCar1Uri);
-    this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
-      (value) => this.countDownValue--,
-      this.handleError,
-      () => {
-        this.overlaySubscription.unsubscribe();
-        this.adoptCurrentHighScores();
-        this.reset();
-        this.router.navigate(['highscore']);
-      }
-    );
+    this.soundService.playCheer();
+
+    if (!this.configurationState.pressKeyToContinue) {
+      this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
+        (value) => this.countDownValue--,
+        this.handleError,
+        () => {
+          this.overlaySubscription.unsubscribe();
+          this.scoreShownLogic();
+        }
+      );
+
+    }
   }
 
-  private launchGameSubscriber() {
+  private scoreShownLogic = () => {
+    this.adoptCurrentHighScores();
+    this.reset();
+    this.router.navigate(['highscore']);
+  }
+
+  private launchGameSubscriber = () => {
     this.hideGame = false;
     this.hideOverlay = true;
     this.hideScore = true;
@@ -296,6 +309,18 @@ export class RecognitionEmotionComponent implements OnInit {
     return temp;
   }
 
+  private determineBottomMessage(alternative: string) {
+    return this.configurationState.pressKeyToContinue ? 'press a button to continue' : alternative;
+  }
+
+  handleKeyDown(event) {
+    if (!this.hideOverlay) {
+      this.launchGameSubscriber();
+    } else  if (!this.hideScore) {
+      this.scoreShownLogic();
+    }
+  }
+
   ngOnInit() {
     this.spinner.show();
     forkJoin([this.configService.isConfigInitialized(), this.initCameraStream()]).subscribe(this.initSuccess, this.handleError);
@@ -306,7 +331,8 @@ export class RecognitionEmotionComponent implements OnInit {
       'image': this.images[ this.currentState ],
       'topMessage': this.overlayTopMessages[ this.currentState ],
       'middleMessage': this.overlayMiddleMessages[ this.currentState ],
-      'bottomMessage': this.overlayBottomMessages[ this.currentState ]
+      'bottomMessage': this.determineBottomMessage(this.overlayBottomMessages[ this.currentState ]),
+      'hideCountDown': this.configurationState.pressKeyToContinue
     };
   }
 
@@ -317,7 +343,8 @@ export class RecognitionEmotionComponent implements OnInit {
       'scorePlayerOne': this.leftScore,
       'playerTwo': this.currentPlayers.currentPlayerTwo.name,
       'scorePlayerTwo': this.rightScore,
-      'bottomMessage': 'embrace the high scores in',
+      'bottomMessage': this.determineBottomMessage('embrace the high scores in'),
+      'hideCountDown': this.configurationState.pressKeyToContinue,
       'playOneIsWinner': this.leftScore >= this.rightScore,
       'playTwoIsWinner': this.rightScore >= this.leftScore
     };

@@ -4,33 +4,45 @@ import {Router} from '@angular/router';
 import {take} from 'rxjs/operators';
 import { PlayerService } from '@app/services';
 import { RecognitionPersonComponent } from '../recognition-person';
-import { PlayerData } from '@app/core/model/PlayerData';
 import { PlayersState } from '@app/misc/players.state';
+import { ConfigurationState } from '@app/misc/configuration.state';
+import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'highscore.component.html',
   styleUrls: ['../../../assets/css/global.css', 'highscore.component.css']
 })
-export class HighscoreComponent implements OnInit {
+export class HighscoreComponent extends KeyListeningComponent implements OnInit {
 
   private subscription: Subscription;
 
   constructor(
     private router: Router,
     private currentPlayers: PlayersState,
-    private playerService: PlayerService
-  ) {}
+    private playerService: PlayerService,
+    protected configurationState: ConfigurationState
+  ) {
+    super(configurationState);
+  }
 
   countDownValue;
-  scores = undefined;
+  scores;
 
-  public ngOnInit() {
+  ngOnInit() {
+    this.mayfetchHighScores(this.currentPlayers);
+    if (!this.configurationState.pressKeyToContinue) {
+      this.launchCountDown();
+    }
+  }
+
+  handleKeyDown(event) {
+    this.decideWhereToGoNext();
+  }
+
+  private launchCountDown() {
     this.countDownValue = 10;
     this.subscription = interval(1000).pipe(take(10)).subscribe(
-      (value) => {
-        this.mayfetchHighScores(this.currentPlayers);
-        this.countDownValue--;
-      },
+      (value) => this.countDownValue--,
       (error) => { /* I dont care */ },
       () => {
         this.subscription.unsubscribe();
@@ -39,7 +51,7 @@ export class HighscoreComponent implements OnInit {
     );
   }
 
-  private decideWhereToGoNext() {
+  private decideWhereToGoNext = () => {
     if (this.currentPlayers.trainingNeeded) {
       this.router.navigate(['training']);
     } else {
@@ -48,15 +60,18 @@ export class HighscoreComponent implements OnInit {
   }
 
   private mayfetchHighScores(players: PlayersState) {
-    if (this.scores === undefined) {
-      this.scores = new Array(); // trigger fetch only once
+    interval(1000).pipe(take(1)).subscribe(val =>
       this.playerService
         .findTop10HighScorePlayersIncluding(RecognitionPersonComponent.personGroupId, players.currentPlayerOne, players.currentPlayerTwo)
-        .then(results => this.scores = results);
-    }
+        .then(results => this.scores = results)
+    );
   }
 
   getHighscores() {
     return this.scores;
+  }
+
+  hideCountdown() {
+    return this.configurationState.pressKeyToContinue;
   }
 }

@@ -7,13 +7,16 @@ export class SoundService {
     private playerRecognized = new Audio();
     private raceStart = new Audio();
     private raceEnd = new Audio();
+    private cheer = new Audio();
     private music = undefined;
+
 
     constructor() {
         this.preload(this.changePhase, '../../../assets/sounds/270341__littlerobotsoundfactory__pickup-04.wav');
         this.preload(this.playerRecognized, '../../../assets/sounds/270304__littlerobotsoundfactory__collect-point-00.wav');
         this.preload(this.raceStart, '../../../assets/sounds/270333__littlerobotsoundfactory__jingle-win-00.wav');
         this.preload(this.raceEnd, '../../../assets/sounds/270330__littlerobotsoundfactory__jingle-achievement-01.wav');
+        this.preload(this.cheer, '../../../assets/sounds/333404__jayfrosting__cheer-2.wav');
     }
 
     private preload(audioElement: HTMLAudioElement, src: string) {
@@ -35,6 +38,10 @@ export class SoundService {
 
     playRaceEnd() {
         this.raceEnd.play();
+    }
+
+    playCheer() {
+        this.cheer.play();
     }
 
     playMusic() {

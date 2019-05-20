@@ -1,5 +1,5 @@
-﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {SoundService, PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService} from '@app/services';
+﻿import {Component, ElementRef, OnInit, ViewChild, HostListener} from '@angular/core';
+import {SoundService, PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService, FaceTrainingService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, interval, Subscription} from 'rxjs';
@@ -14,6 +14,7 @@ import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
 import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
+import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
@@ -46,9 +47,9 @@ export class RecognitionPersonComponent implements OnInit {
     private faceApiService: AzureVisionFaceApiService,
     private currentPlayers: PlayersState,
     private currentConfiguration: ConfigurationState,
-    private rcCarService: RCCarService,
-    private soundService: SoundService
-  ) { }
+    private soundService: SoundService,
+    private faceTrainingService: FaceTrainingService
+  ) {}
 
   // TODO
   private recreate = () => {
@@ -59,7 +60,11 @@ export class RecognitionPersonComponent implements OnInit {
       .toPromise()
       .then(() => this.faceApiService.createPersonGroup(id, id)
       .toPromise())
-      .then(() => console.log('recreated'));
+      .then(() => this.faceTrainingService.beginPersonGroupTraining(
+          id,
+          () => console.log('recreation done'),
+          () => 'still training'))
+      .then(() => 'all done');
   }
 
   private initSuccess = () => {
@@ -68,10 +73,7 @@ export class RecognitionPersonComponent implements OnInit {
       // this.recreate();
       this.soundService.playMusic();
 
-this.rcCarService.stop(this.currentConfiguration.rcCar1Uri);
-
       // initialisation
-      this.alertService.success(this.translateService.instant('views.home.messages.applicationSuccessfullyInitialized'));
       this.areMultipleCamerasAvailable = this.rtcService.getNumberOfAvailableCameras() > 1;
       this.playerPositionService = new PlayerPositionService(this.canvasElm);
 
