@@ -1,26 +1,36 @@
 ﻿<div class="theDarkness">
 
   <div class="centerMessage">
-
-    <p class="textMedium highLine">How to play</p><br><br>
-
-    <p><img style="width: 30vw; height: auto;" src="/assets/images/placeholder_racetrack_large.png"></p><br><br>
+    <p class="textMedium highLine">How to play</p>
+  </div>
     
-    <p class="textSmall highLine">Match the shown emotion to move your truck.</p>
-
-    <p class="textSmall highLine">Race to the finish!</p>
+  <div class="leftBox">
+    <p>
+      <img style="height: 10vh; width: auto;" src="/assets/images/emoji_happy_large.png">&nbsp;&nbsp;&nbsp;&nbsp;
+      <img style="height: 10vh; width: auto;" src="/assets/images/emoji_angry_large.png">&nbsp;&nbsp;&nbsp;&nbsp;
+      <img style="height: 10vh; width: auto;" src="/assets/images/emoji_sad_large.png">
+    </p>
+    <p class="textMedium">Match the emotions!</p>
+    <p class="textSmall">happy, angry, sad</p>
+  </div>
   
-    <p class="textSmall highLine">The stronger the emotion, the faster you go!</p>
+  <div class="centerArrow">
+      <img style="height: 5vh; width: auto;" src="/assets/images/arrow_white_large.png">
+  </div>
 
+  <div class="rightBox">
+    <p><img style="height: 20vh; width: auto;" src="/assets/images/blue_forklift_large.png"></p>
+    <p class="textMedium">Race to the finish!</p>
+    <p class="textSmall">The stronger the emotion, the faster you go!</p>
   </div>
 
   <div class="bottom" [hidden]="hideCountDown">
     <p class="textSmall">Game starts in</p>
     <p class="textMedium">00:0{{countDownValue}}</p>
   </div>
-
+    
   <div class="bottom" [hidden]="!hideCountDown">
     <p class="textSmall">press a button to continue</p>
   </div>
-
+    
 </div>

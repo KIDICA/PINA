@@ -170,10 +170,6 @@ export class PlayerService {
     return players.find(player => player.name === name) === undefined;
   }
 
-  private randomNumber() {
-    return Math.round(Math.random() * 100);
-  }
-
   private selectRandom(someArray) {
     return someArray[Math.floor(Math.random() * someArray.length)];
   }
