@@ -1,17 +1,17 @@
-﻿<div [hidden]="false" style="top: 0px; left: 0px; margin: 0px; border: 0px; padding: 0px; position:absolute; width: 100%; height: 100%; background-color: black;">
+﻿<div [hidden]="false" class="theDarkness">
 
-  <div class="centerMessageTop">Training</div>
-   
   <div [ngClass]="{
     'animatedCenterCircle': runCircleFillAnimation,
     'centerCircle': !runCircleFillAnimation
   }">&nbsp;</div>
   
-  <div class="centerCircleBorder">&nbsp;</div>
+  <div class="centerCircleBorder">
+      <img class="centeredEmoji" src="/assets/images/emoji_nerd_large.png">
+  </div>
 
   <div class="centerMessageBottom">
-    New player found!<br><br>
-    PINA is memorising the new faces right now ...
+    <p class="textMedium">Learning new faces ...</p>
+    <p class="textSmall">PIA is getting to know some new faces. The game will be available again shortly.</p>
   </div>
 
 </div>

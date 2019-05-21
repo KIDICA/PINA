@@ -15,11 +15,14 @@
   width: 80vw; 
   height: 14vh;
   left: 10vw; 
-  bottom: 20vh;
+  bottom: 40vh;
   text-align: center;
-  color: #FFF;
-  font-size: 2vw;
-  line-height: 1.0;
+}
+
+.centeredEmoji {
+  height: 4vw;
+  margin-top: 5vw; 
+  width: auto;
 }
 
 .centerCircle {
@@ -56,7 +59,7 @@
     top: 11vw;
   }
   
-  50% { 
+  50% {
     border-radius: 28vw 28vw 28vw 28vw;
     width: 14vw; 
     height: 14vw;

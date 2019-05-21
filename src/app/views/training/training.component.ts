@@ -6,7 +6,7 @@ import { RecognitionPersonComponent } from '../recognition-person';
 
 @Component({
   templateUrl: 'training.component.html',
-  styleUrls: ['training.component.css']
+  styleUrls: ['../../../assets/css/global.css', 'training.component.css']
 })
 export class TrainingComponent implements OnInit {
 
@@ -38,7 +38,7 @@ export class TrainingComponent implements OnInit {
   }
 
   private working = () => {
-    // I don't care
+    // I dont care
   }
 
 }

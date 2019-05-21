@@ -47,7 +47,7 @@ export class RecognitionPersonComponent implements OnInit {
     private faceApiService: AzureVisionFaceApiService,
     private currentPlayers: PlayersState,
     private currentConfiguration: ConfigurationState,
-    private soundService: SoundService,
+    private soundService: SoundService, 
     private faceTrainingService: FaceTrainingService
   ) {}
 
