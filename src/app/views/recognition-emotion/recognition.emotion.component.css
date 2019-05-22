@@ -1,0 +1,153 @@
+﻿/* ############################# Overlay ############################# */
+
+.overlay {
+  margin: 0px; 
+  padding: 0px; 
+  border: 0px; 
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75); 
+  text-align: center;
+}
+
+.overlayTop {
+  top: 15vh; 
+  position: absolute; 
+  width: 100%;
+}
+
+.overlayBottom {
+  bottom: 15vh; 
+  position: absolute; 
+  width: 100%;
+}
+
+.overlayImage {
+  width: 10vw; 
+  height: auto;
+}
+
+/* ############################# Game ############################# */
+
+.webcam-stream {
+  margin: 0px; 
+  padding: 0px; 
+  border: 0px; 
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.verticalLine {
+  border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
+  height: 50vh;
+  position: absolute;
+  left: 49.75vw;
+  top: 24vw;
+}
+
+.leftVerticalLine {
+  border-right: 1.5vw solid  rgba(223, 111, 92, 1);
+  position: absolute;
+  left: 48vw;
+  bottom: 5vh;
+}
+
+.leftScore {
+  position: absolute; 
+  left: 44.5vw; 
+  width: 5vw; 
+  height: 2vh;
+  bottom: 5vh; 
+  text-align: right;
+}
+
+.rightScore {
+  position: absolute; 
+  right: 44.5vw; 
+  width: 5vw; 
+  height: 2vh;
+  bottom: 5vh; 
+  text-align: left;
+}
+
+.rightVerticalLine {
+  border-left: 1.5vw solid  rgba(76, 154, 42, 1);
+  position: absolute;
+  right: 48vw;
+  bottom: 5vh;
+}
+
+.leftGauge {
+  text-align: center;
+  left: 15vw; 
+  bottom: 10vh;
+  position: absolute; 
+  width: 20vw; 
+}
+
+.rightGauge {
+  text-align: center; 
+  right: 15vw; 
+  bottom: 10vh; 
+  position: absolute; 
+  width: 20vw;
+}
+
+.centerCircle {
+  position: absolute; 
+}
+
+.animatedCenterCircle {
+  position: absolute; 
+  background: rgba(255, 255, 255, 0.5);
+  animation-name: animation;
+  animation-duration: 10s;
+  animation-iteration-count: 1;
+}
+
+.centerMessage {
+  position: absolute;
+  width: 14vw; 
+  height: 2vw;
+  left: 43vw; 
+  top: 2vw;
+}
+
+.centerCircleBorder {
+  position: absolute; 
+  border-radius: 28vw 28vw 28vw 28vw;
+  width: 14vw; 
+  height: 14vw;
+  left: 43vw; 
+  top: 5vw;
+  border: 3px dotted rgba(255, 255, 255, 0.5);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.centeredEmoji {
+  height: 4vw;
+  margin-top: 5vw; 
+  width: auto;
+}
+
+@keyframes animation {
+  
+  0% {
+    border-radius: 4vw 4vw 4vw 4vw;
+    width: 2vw; 
+    height: 2vw;
+    left: 49vw; 
+    top: 11vw;
+  }
+  
+  100% { 
+    border-radius: 28vw 28vw 28vw 28vw;
+    width: 14vw; 
+    height: 14vw;
+    left: 43vw; 
+    top: 5vw;
+  }
+}

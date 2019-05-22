@@ -2,6 +2,14 @@
   "spinner": {
     "initText": "Initializing services and camera ..."
   },
+  "components": {
+    "header": {
+      "buttons": {
+        "config": "config",
+        "signOut": "logout"
+      }
+    }
+  },
   "views": {
     "login": {
       "content": {
@@ -23,10 +31,10 @@
       },
       "canvas": {
         "resultText": "{numberOfFaces, plural, =0{No} one{One} other{Some}} (pretty) {numberOfFaces, plural, =0{face} one{face} other{faces}} found"
-      },
-      "buttons": {
-        "signOut": "Sign out"
       }
+    },
+    "training": {
+
     }
   }
 }

@@ -7,10 +7,13 @@
   background-color: transparent;
   background-image: none;
   border-color: #FFFFFF;
+  color: #FFFFFF !important;
+  font-size: 1vh;
 }
 
 .btn-outline-white:hover {
   color: #AE0055 !important;
   background-color: #FFFFFF;
   border-color: #AE0055;
+  font-size: 1vh;
 }

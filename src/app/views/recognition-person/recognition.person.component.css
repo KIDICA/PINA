@@ -1,0 +1,52 @@
+﻿.verticalLine {
+  border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
+  height: 50vh;
+  position: absolute;
+  left: 49.75vw;
+  top: 24vw;
+}
+
+.leftGauge {
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  text-align: center;
+  left: 15vw; 
+  top: 30vh; 
+  position: absolute; 
+  width: 20vw; 
+  height: 20vw;
+  padding-top: 7vw;
+}
+
+.rightGauge {
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  text-align: center; 
+  right: 15vw; 
+  top: 30vh;
+  position: absolute; 
+  width: 20vw;
+  height: 20vw;
+  padding-top: 7vw;
+}
+
+.centerCircleBorder {
+  position: absolute; 
+  width: 20vw; 
+  height: auto;
+  left: 40vw; 
+  top: 5vw;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.ready {
+  color: #FFF;
+  font-size: 1vw;
+  line-height: 1.5;
+  padding: 0 2vw 0 2vw; 
+  background-color: darkgreen; 
+  border-color:whitesmoke; 
+  border-radius: 5vw; 
+  border-width: 0.1vw; border-style: solid;
+}
+
+

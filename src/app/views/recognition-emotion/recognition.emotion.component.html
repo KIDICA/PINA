@@ -1,0 +1,115 @@
+﻿<canvas #canvas [hidden]="true"></canvas>
+
+<video #video class="webcam-stream" autoplay playsinline></video>      
+
+<!-- ############################# Overlay Emotion ############################# -->
+
+<div [hidden]="hideOverlay" class="overlay">
+  <div class="overlayTop">
+    <p class="textSmall">{{emotionOverlay().topMessage}}</p>
+    <img src="{{emotionOverlay().image}}" class="overlayImage">
+    <p class="textLarge">{{emotionOverlay().middleMessage}}</p>
+  </div>
+
+  <div class="overlayBottom">
+    <p class="textSmall">{{emotionOverlay().bottomMessage}}</p>
+    <p class="textMedium" [hidden]="[emotionOverlay().hideCountDown]">00:0{{countDownValue}}</p>
+  </div>
+</div>
+
+<!-- ############################# Overlay Score ############################# -->
+
+<div [hidden]="hideScore" class="overlay">
+
+  <div class="overlayTop">
+    <p class="textLarge">{{scoreOverlay().headline}}</p>
+  </div>
+  
+  <div class="leftGauge">
+    <p [hidden]="!scoreOverlay().playTwoIsWinner" class="textLarge">WINNER</p>
+    <p [hidden]="!scoreOverlay().playTwoIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p class="textMedium redText">{{scoreOverlay().playerTwo}}</p>
+    <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
+  </div>
+
+  <div class="rightGauge">
+    <p [hidden]="!scoreOverlay().playOneIsWinner" class="textLarge">WINNER</p>
+    <p [hidden]="!scoreOverlay().playOneIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p class="textMedium greenText">{{scoreOverlay().playerOne}}</p>
+    <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
+  </div>
+
+  <div class="overlayBottom">
+      <p class="textSmall">{{scoreOverlay().bottomMessage}}</p>
+      <p class="textMedium" [hidden]="[scoreOverlay().hideCountDown]">00:0{{countDownValue}}</p>
+    </div>
+
+</div>
+
+<!-- ############################# Game ############################# -->
+
+<div [hidden]="hideGame" class="webcam-stream">
+  <div class="centerMessage textMedium">{{gameOverlay().message}}</div>
+
+  <div class="textSmall redText leftScore" [style.bottom.vh]="gameOverlay().leftBarHeight + 7">
+    {{gameOverlay().scorePlayerTwo}}
+  </div>
+  <div class="leftVerticalLine" [style.height.vh]="gameOverlay().leftBarHeight" #leftBar>&nbsp;</div>
+
+  <div class="textSmall greenText rightScore" [style.bottom.vh]="gameOverlay().rightBarHeight + 7">
+    {{gameOverlay().scorePlayerOne}}
+  </div>
+  <div class="rightVerticalLine" [style.height.vh]="gameOverlay().rightBarHeight">&nbsp;</div>
+
+  <div [ngClass]="{
+    'animatedCenterCircle': runCircleFillAnimation,
+    'centerCircle': !runCircleFillAnimation
+  }">&nbsp;</div>
+  
+  <div class="centerCircleBorder">
+      <img class="centeredEmoji" src="{{gameOverlay().image}}">
+  </div>
+
+  <div class="leftGauge" #leftContainer>
+
+    <radial-gauge
+      major-ticks="[0, 25, 50, 75, 100]"
+      min-Value="0"
+      max-Value="100"
+      highlights='[ 
+        {"from": 0, "to": 25, "color": "rgb(245, 168, 156)"},
+        {"from": 25, "to": 50, "color": "rgb(240, 146, 136)"},
+        {"from": 50, "to": 75, "color": "rgb(234, 127, 109)"},
+        {"from": 75, "to": 100, "color": "rgb(223, 111, 92)"} 
+      ]'
+      color-plate="rgb(255, 255, 255)"
+      width="500"
+      height="500"
+      value="{{gameOverlay().rightGaugeValue}}"></radial-gauge>
+
+      <p class="textSmall redText">{{gameOverlay().playerTwo}}</p>
+  </div>
+
+  <div class="rightGauge">
+
+    <radial-gauge
+      major-ticks="[0, 25, 50, 75, 100]"
+      min-Value="0"
+      max-Value="100"
+      highlights='[ 
+        {"from": 0, "to": 25, "color": "rgb(172, 223, 135)"},
+        {"from": 25, "to": 50, "color": "rgb(104, 187, 89)"},
+        {"from": 50, "to": 75, "color": "rgb(118, 186, 27)"},
+        {"from": 75, "to": 100, "color": "rgb(76, 154, 42)"} 
+      ]'
+      color-plate="rgb(255, 255, 255)"
+      width="500"
+      height="500"
+      animationRule="linear"
+      value="{{gameOverlay().leftGaugeValue}}"></radial-gauge>
+
+      <p class="textSmall greenText">{{gameOverlay().playerOne}}</p>
+
+    </div>
+
+</div>

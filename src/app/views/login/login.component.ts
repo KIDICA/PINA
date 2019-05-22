@@ -15,10 +15,12 @@ export class LoginComponent implements OnInit {
         private alertService: PinaAlertService,
         private adalService: CustomAdalService
     ) {
-        // redirect to home if already logged in
-        if (this.adalService.isAuthenticated()) {
-            this.router.navigate(['/']);
-        }
+
+      if (this.adalService.isAuthenticated()) {
+          this.router.navigate(['person']);
+          // this.router.navigate(['emotion']);
+      }
+
     }
 
     ngOnInit() {

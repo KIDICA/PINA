@@ -1,11 +1,7 @@
 ﻿<!-- nav -->
-<nav *ngIf="isNavbarVisible()" class="navbar navbar-expand navbar-dark justify-content-end">
-  <a class="navbar-brand" href="#">
-    <img alt="" class="d-inline-block align-top" height="30"
-         src="assets/images/logo.svg" width="30">
-    P I N A
-  </a>
-  <div class="ml-auto">
-    <a (click)="logout()" class="btn btn-outline-white ml-2">{{ 'views.home.buttons.signOut' | translate }}</a>
+<nav *ngIf="isNavbarVisible()">
+  <div style="position: absolute; top: 1vh; right: 1vw; z-index: 5;">
+    <a routerLink="/config" class="btn btn-outline-white ml-2">{{ 'components.header.buttons.config' | translate }}</a>
+    <a (click)="logout()" class="btn btn-outline-white ml-2">{{ 'components.header.buttons.signOut' | translate }}</a>
   </div>
 </nav>

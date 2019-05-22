@@ -1,0 +1,53 @@
+﻿.table {
+  position: absolute;
+  top: 30vh;
+  left: 25vw;
+  display: table; 
+  width: 50vw;
+}
+
+.row {
+  display: table-row; 
+}
+
+.header {
+  border-top: 0; 
+  border-bottom: 0.1vw; 
+  border-left: 0; 
+  border-right: 0; 
+  border-bottom-color: white; 
+  border-style: solid;
+  font-weight: bold;
+}
+
+.firstCell {
+  text-align: left;
+  display: table-cell; 
+  padding: 0.5vw; 
+}
+
+.secondCell {
+  text-align: left;
+  display: table-cell; 
+  padding: 0.5vw; 
+}
+
+.thirdCell {
+  text-align: left;
+  display: table-cell; 
+  padding: 0.5vw; 
+}
+
+.bottom {
+  bottom: 15vh; 
+  position: absolute; 
+  width: 100%;
+}
+
+.centerMessage {
+  position: absolute;
+  width: 14vw; 
+  height: 2vw;
+  left: 43vw; 
+  top: 2vw;
+}
