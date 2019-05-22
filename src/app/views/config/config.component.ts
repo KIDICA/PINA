@@ -5,9 +5,7 @@ import { RTCService } from '@app/services/rtc.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, interval } from 'rxjs';
-import { RCCarsState } from '@app/misc/rc.cars.state';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   templateUrl: 'config.component.html',

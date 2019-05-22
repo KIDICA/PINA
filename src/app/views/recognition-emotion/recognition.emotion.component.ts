@@ -126,7 +126,8 @@ export class RecognitionEmotionComponent extends KeyListeningComponent implement
 
     if (!this.configurationState.pressKeyToContinue) {
       this.countDownValue = 5;
-      this.rcCarService.accelerate(this.configurationState.rcCar1Uri, 1);
+      this.rcCarService.stop(this.configurationState.rcCar1Uri);
+      this.rcCarService.stop(this.configurationState.rcCar2Uri);
       this.overlaySubscription = interval(1000).pipe(take(5)).subscribe(
         (value) => { this.countDownValue--; },
         this.handleError,
@@ -147,6 +148,7 @@ export class RecognitionEmotionComponent extends KeyListeningComponent implement
     this.hideScore = false;
     this.mayUpdateHighScores();
     this.rcCarService.stop(this.configurationState.rcCar1Uri);
+    this.rcCarService.stop(this.configurationState.rcCar2Uri);
     this.soundService.playCheer();
 
     if (!this.configurationState.pressKeyToContinue) {
@@ -207,6 +209,7 @@ export class RecognitionEmotionComponent extends KeyListeningComponent implement
         this.leftGaugeValues.push(score);
 
         score = this.determineScore(response, false);
+        this.rcCarService.accelerate(this.configurationState.rcCar2Uri, score);
         this.rightScore += score;
         this.rightGaugeValues.push(score);
     });

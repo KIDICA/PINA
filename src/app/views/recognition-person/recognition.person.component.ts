@@ -1,5 +1,5 @@
-﻿import {Component, ElementRef, OnInit, ViewChild, HostListener} from '@angular/core';
-import {SoundService, PinaAlertService, ConfigService, FaceDetectionService, PlayerService, RCCarService, FaceTrainingService} from '@app/services';
+﻿import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {SoundService, PinaAlertService, ConfigService, FaceDetectionService, PlayerService, FaceTrainingService} from '@app/services';
 import {RTCService} from '@app/services/rtc.service';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable, forkJoin, interval, Subscription} from 'rxjs';
@@ -13,8 +13,6 @@ import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
-import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
-import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
