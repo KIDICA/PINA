@@ -1,4 +1,4 @@
-﻿import { Injectable, Output } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { PlayerData } from '@app/core/model/PlayerData';
 import { AzureVisionFaceApiService } from './azureVisionFaceApi.service';
 import { map } from 'rxjs/operators';
