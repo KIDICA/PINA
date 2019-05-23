@@ -7,7 +7,7 @@ export const environment = {
   disableAuthentication: false,
   snapshotIntervalInSeconds: 5,
   config: {
-    url: 'https://yacovi-config-service.azurewebsites.net/api/GetYaCoViConfig'
+    url: 'https://yacovi-config-service.azurewebsites.net/api/GetConfig'
   },
   canvas: {
     font: {
