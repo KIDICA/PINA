@@ -26,6 +26,13 @@
     second car<br><input size="30" [(ngModel)]="configurationState.rcCar2Uri"><br><br><br>
     <a (click)="testRCCars()" class="btn">start test run</a>&nbsp;&nbsp;
     <a (click)="stopRCCars()" class="btn">stop all cars</a>
+    
+    <br><br><br>
+    rc cars remote control:
+    <span *ngFor="let id of carModes()">
+      <a (click)="selectCarMode(id.value)"
+        class="{{id.selected ? 'btn selected' : 'btn'}}">{{id.label}}</a>&nbsp;
+    </span>
   </div>
 
 

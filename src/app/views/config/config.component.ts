@@ -42,6 +42,24 @@ export class ConfigurationComponent implements OnInit {
     this.rcCarService.stop(this.configurationState.rcCar2Uri);
   }
 
+  carModes() {
+    return [
+      {
+        'value': true,
+        'label': 'ON',
+        'selected': this.configurationState.driveCars
+      }, {
+        'value': false,
+        'label': 'OFF',
+        'selected': !this.configurationState.driveCars
+      }
+    ];
+  }
+
+  selectCarMode(newMode: boolean) {
+    this.configurationState.driveCars = newMode;
+  }
+
   operatingModes() {
     return [
       {
@@ -58,7 +76,6 @@ export class ConfigurationComponent implements OnInit {
 
   selectOperatingMode(newMode: boolean) {
     this.configurationState.pressKeyToContinue = newMode;
-    console.log('configurationState', this.configurationState.pressKeyToContinue);
   }
 
   videoDeviceIds() {

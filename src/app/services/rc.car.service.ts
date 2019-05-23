@@ -1,31 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { environment } from '@environments/environment';
-import { ConfigService } from './config.service';
-import {
-    HTTP_HEADER_AZ_CS_SUBSCRIPTION_API_KEY_NAME,
-    HTTP_HEADER_CONTENT_TYPE_NAME,
-    HTTP_HEADER_CONTENT_TYPE_VALUE_APPLICATION_OCTECT_STREAM,
-    HTTP_HEADER_CONTENT_TYPE_VALUE_APPLICATION_JSON
-} from '@app/core/constants/http.constants';
+import { HttpClient } from '@angular/common/http';
+import { ConfigurationState } from '@app/misc/configuration.state';
 
 
 @Injectable({ providedIn: 'root' })
 export class RCCarService {
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private configurationState: ConfigurationState
     ) {}
 
     /** 0 bis 100 */
     accelerate(uri: string, speed: number) {
-        const body = this.speedyBody(this.rangedValue(speed));
-        return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
+        if (this.configurationState.driveCars) {
+            this.http.put(uri, this.speedyBody(this.rangedValue(speed))).subscribe(this.NOTHINGNESS);
+        }
     }
 
     stop(uri: string) {
-        const body = this.speedyBody(0);
-        return this.http.put(uri, body).subscribe(this.NOTHINGNESS);
+        if (this.configurationState.driveCars) {
+            this.http.put(uri, this.speedyBody(0)).subscribe(this.NOTHINGNESS);
+        }
     }
 
     private NOTHINGNESS = response => {

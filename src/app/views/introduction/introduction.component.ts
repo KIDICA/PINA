@@ -18,9 +18,11 @@ export class IntroductionComponent extends KeyListeningComponent implements OnIn
   ) {
     super(currentConfiguration);
     this.hideCountDown = configurationState.pressKeyToContinue;
+    this.hideTruck = !configurationState.driveCars;
   }
 
   hideCountDown;
+  hideTruck;
   countDownValue;
 
   ngOnInit() {
