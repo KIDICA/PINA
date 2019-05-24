@@ -71,6 +71,20 @@ export class HighscoreComponent extends KeyListeningComponent implements OnInit 
     return this.scores;
   }
 
+  getCurrentScores() {
+    return {
+      'left': {
+        'score': this.currentPlayers.currentPlayerTwo.score,
+        'name': this.currentPlayers.currentPlayerTwo.name
+      },
+      'right': {
+        'score': this.currentPlayers.currentPlayerOne.score,
+        'name': this.currentPlayers.currentPlayerOne.name
+      }
+    };
+  }
+
+
   hideCountdown() {
     return this.configurationState.pressKeyToContinue;
   }

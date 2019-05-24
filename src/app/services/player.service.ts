@@ -208,12 +208,6 @@ export class PlayerService {
       .findPersons(personGroupId)
       .toPromise()
       .then((respones: any[]) => respones.map(this.responseToPlayerMapper))
-      .then((players: PlayerData[]) => players.filter(p => p.personId !== playerOne.personId && p.personId !== playerTwo.personId))
-      .then((players: PlayerData[]) => {
-        players.push(playerOne);
-        players.push(playerTwo);
-        return players;
-      })
       .then((players: PlayerData[]) => {
         this.sort(players);
         return players;
@@ -226,7 +220,7 @@ export class PlayerService {
     return {
       'index': index + 1,
       'player': player,
-      'mayIgnore': index > 9 && !(pOne.personId === player.personId || pTwo.personId === player.personId),
+      'mayIgnore': index > 9,
       'isPlayerOne': pOne.personId === player.personId,
       'isPlayerTwo': pTwo.personId === player.personId
     };

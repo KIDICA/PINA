@@ -39,7 +39,7 @@
 }
 
 .bottom {
-  bottom: 15vh; 
+  bottom: 10vh; 
   position: absolute; 
   width: 100%;
 }
@@ -50,4 +50,23 @@
   height: 2vw;
   left: 43vw; 
   top: 2vw;
+}
+
+.highScoreCell {
+  display: table-cell; 
+  width: 10vw; 
+  height: 10vh;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.arrow {
+  height: 3vh; 
+  width: auto; 
+}
+
+.recentScores {
+  position: absolute; 
+  left: 25vw;
+  bottom: 20vh;
 }
