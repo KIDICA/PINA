@@ -3,7 +3,12 @@
   <video #videoPerson class="webcam-stream" autoplay playsinline></video>
 
   <div class="verticalLine">&nbsp;</div>
-      
+ 
+  
+
+
+
+  
   <div class="centerCircleBorder">
       <img style="width: 15vw; height: auto;" src="/assets/images/game_logo_large.png">
   </div>
@@ -42,4 +47,10 @@
     <span class="greenText">{{playerOne.name}}</span><br>
     HIGHSCORE: {{playerOne.score}}<br><br>
     <span class="ready">READY</span>
+  </div>
+
+  <!-- ####################################################################################################### -->
+
+  <div class="bottom" [hidden]="!showBottomMessage()">
+    <p class="textSmall">press a button to continue</p>
   </div>

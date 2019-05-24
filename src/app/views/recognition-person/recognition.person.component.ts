@@ -13,12 +13,13 @@ import { PlayerCreator } from './player.creator';
 import { PlayersState } from '@app/misc/players.state';
 import { PlayerPositionService } from '@app/services/player.position.service';
 import { ConfigurationState } from '@app/misc/configuration.state';
+import { KeyListeningComponent } from '../abstract';
 
 @Component({
   templateUrl: 'recognition.person.component.html',
   styleUrls: ['../../../assets/css/global.css', 'recognition.person.component.css']
 })
-export class RecognitionPersonComponent implements OnInit {
+export class RecognitionPersonComponent extends KeyListeningComponent implements OnInit {
 
   // TODO
   static readonly personGroupId = 'pina-test-1';
@@ -44,10 +45,12 @@ export class RecognitionPersonComponent implements OnInit {
     private playerService: PlayerService,
     private faceApiService: AzureVisionFaceApiService,
     private currentPlayers: PlayersState,
-    private currentConfiguration: ConfigurationState,
+    protected currentConfiguration: ConfigurationState,
     private soundService: SoundService,
     private faceTrainingService: FaceTrainingService
-  ) {}
+  ) {
+    super(currentConfiguration);
+  }
 
   // TODO
   private recreate = () => {
@@ -61,7 +64,7 @@ export class RecognitionPersonComponent implements OnInit {
       .then(() => this.faceTrainingService.beginPersonGroupTraining(
           id,
           () => console.log('recreation done'),
-          () => 'still training'))
+          () => console.log('still training')))
       .then(() => 'all done');
   }
 
@@ -102,7 +105,7 @@ export class RecognitionPersonComponent implements OnInit {
   private analyzeResponse = (data: FaceContainer) => {
     if (this.isAlive()) {
       this.mapFoundFaces(data);
-      this.mayLearnNewFaces();
+      this.mayCreateNewPersons();
       this.mayMoveToNextPage();
     }
   }
@@ -167,7 +170,7 @@ export class RecognitionPersonComponent implements OnInit {
     }
   }
 
-  private mayLearnNewFaces() {
+  private mayCreateNewPersons() {
 
     if (!this.playerOne.isNoPlayerFound() && !this.playerTwo.isNoPlayerFound()) {
 
@@ -209,11 +212,25 @@ export class RecognitionPersonComponent implements OnInit {
       }
 
       // wait some time, then continue
-      const temp = interval(3000).pipe(take(1)).subscribe(value => {
-        temp.unsubscribe();
-        this.router.navigate(['intro']);
-      });
+      if (!this.currentConfiguration.pressKeyToContinue) {
+        const temp = interval(3000).pipe(take(1)).subscribe(value => {
+          temp.unsubscribe();
+          this.router.navigate(['intro']);
+        });
+      }
+
     }
+  }
+
+  handleKeyDown(event) {
+    if (!this.playerOne.isNoPlayerFound() && !this.playerTwo.isNoPlayerFound()) {
+      this.mayCreateNewPersons();
+      this.router.navigate(['intro']);
+    }
+  }
+
+  showBottomMessage() {
+    return this.currentConfiguration.pressKeyToContinue && !this.playerOne.isNoPlayerFound() && !this.playerTwo.isNoPlayerFound();
   }
 
   ngOnInit() {

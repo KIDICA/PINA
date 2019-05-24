@@ -1,12 +1,4 @@
-﻿.verticalLine {
-  border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
-  height: 50vh;
-  position: absolute;
-  left: 49.75vw;
-  top: 24vw;
-}
-
-.leftGauge {
+﻿.leftGauge {
   border: 3px solid rgba(255, 255, 255, 0.5);
   text-align: center;
   left: 15vw; 
@@ -49,4 +41,16 @@
   border-width: 0.1vw; border-style: solid;
 }
 
+.verticalLine {
+  border-left: 0.5vw solid  rgba(255, 255, 255, 0.5);
+  height: 40vh;
+  position: absolute;
+  left: 49.75vw;
+  top: 24vw;
+}
 
+.bottom {
+  bottom: 10vh; 
+  position: absolute; 
+  width: 100%;
+}
