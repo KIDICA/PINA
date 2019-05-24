@@ -13,7 +13,7 @@
   "views": {
     "login": {
       "content": {
-        "introduction": "PIA stands for \"Person Identification\" and is a small web application to experiment with cloud-based person and facial recognition APIs like (<a href='https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/home' target='_blank'>Azure Cognitive Services</a> or <a href='https://cloud.google.com/vision/docs/' target='_blank'> Google Cloud Vision</a>).",
+        "introduction": "PIA stands for \"Person Identification Assitant\" and is a small web application to experiment with cloud-based person and facial recognition APIs like (<a href='https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/home' target='_blank'>Azure Cognitive Services</a> or <a href='https://cloud.google.com/vision/docs/' target='_blank'> Google Cloud Vision</a>).",
         "description": ""
       },
       "buttons": {
