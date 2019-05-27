@@ -28,7 +28,7 @@
   <div class="leftGauge">
     <p [hidden]="!scoreOverlay().playTwoIsWinner" class="textLarge">WINNER</p>
     <p [hidden]="!scoreOverlay().playTwoIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
-    <p class="textMedium redText">{{scoreOverlay().playerTwo}}</p>
+    <p class="textMedium blueText">{{scoreOverlay().playerTwo}}</p>
     <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
   </div>
 
@@ -51,7 +51,7 @@
 <div [hidden]="hideGame" class="webcam-stream">
   <div class="centerMessage textMedium">{{gameOverlay().message}}</div>
 
-  <div class="textSmall redText leftScore" [style.bottom.vh]="gameOverlay().leftBarHeight + 7">
+  <div class="textSmall blueText leftScore" [style.bottom.vh]="gameOverlay().leftBarHeight + 7">
     {{gameOverlay().scorePlayerTwo}}
   </div>
   <div class="leftVerticalLine" [style.height.vh]="gameOverlay().leftBarHeight" #leftBar>&nbsp;</div>
@@ -87,7 +87,7 @@
       height="500"
       value="{{gameOverlay().rightGaugeValue}}"></radial-gauge>
 
-      <p class="textSmall redText">{{gameOverlay().playerTwo}}</p>
+      <p class="textSmall blueText">{{gameOverlay().playerTwo}}</p>
   </div>
 
   <div class="rightGauge">

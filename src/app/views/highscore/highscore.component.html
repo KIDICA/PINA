@@ -17,7 +17,7 @@
       <div class="firstCell">{{score.index}}</div>
       <div class="secondCell">{{score.player.score}}</div>
       <div *ngIf="score.isPlayerOne" class="thirdCell greenText">{{score.player.name}}</div>
-      <div *ngIf="score.isPlayerTwo" class="thirdCell redText">{{score.player.name}}</div>
+      <div *ngIf="score.isPlayerTwo" class="thirdCell blueText">{{score.player.name}}</div>
       <div *ngIf="!score.isPlayerOne && !score.isPlayerTwo" class="thirdCell">{{score.player.name}}</div>
     </div>
 
@@ -27,7 +27,7 @@
       <div class="row">
         <div class="highScoreCell">
           <p class="textMedium">{{getCurrentScores().left.score}}</p>
-          <p class="textSmall redText">{{getCurrentScores().left.name}}</p>
+          <p class="textSmall blueText">{{getCurrentScores().left.name}}</p>
         </div>
         <div class="highScoreCell"><img class="arrow" style="transform: scaleX(-1)" src="/assets/images/arrow_white_large.png"></div>
         <div class="highScoreCell textSmall">your recent score</div>
