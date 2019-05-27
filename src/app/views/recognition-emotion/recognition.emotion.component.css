@@ -48,7 +48,7 @@
 }
 
 .leftVerticalLine {
-  border-right: 1.5vw solid  rgba(223, 111, 92, 1);
+  border-right: 1.5vw solid  rgba(0, 108, 187, 1);
   position: absolute;
   left: 48vw;
   bottom: 5vh;
