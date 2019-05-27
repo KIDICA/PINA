@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 export class PlayerService {
 
   private readonly names = ['Abe Sapien', 'Abin Sur', 'Abomination', 'Abraxas', 'Absorbing Man', 'Adam Monroe', 'Adam Strange',
-  'Agent 13', 'Agent Bob', 'Agent Zero','Air-Walker', 'Ajax', 'Alan Scott', 'Alex Mercer', 'Alex Woolsly', 'Alfred Pennyworth',
+  'Agent 13', 'Agent Bob', 'Agent Zero', 'Air-Walker', 'Ajax', 'Alan Scott', 'Alex Mercer', 'Alex Woolsly', 'Alfred Pennyworth',
   'Alien', 'Allan Quatermain', 'Amazo', 'Ammo', 'Ando Masahashi', 'Angel', 'Angel Dust', 'Angel Salvadore', 'Angela', 'Animal Man',
   'Annihilus', 'Ant-Man', 'Anti-Monitor', 'Anti-Spawn', 'Anti-Venom', 'Apocalypse', 'Aquababy', 'Aqualad', 'Aquaman', 'Arachne',
   'Archangel', 'Arclight', 'Ardina', 'Ares', 'Ariel', 'Armor', 'Arsenal', 'Astro Boy', 'Atlas', 'Atom', 'Atom Girl', 'Aurora',
