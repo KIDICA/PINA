@@ -27,14 +27,14 @@
   
   <div class="leftGauge">
     <p [hidden]="!scoreOverlay().playTwoIsWinner" class="textLarge">WINNER</p>
-    <p [hidden]="!scoreOverlay().playTwoIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p [hidden]="!scoreOverlay().playTwoIsWinner" style="margin-bottom: 15vh;"><img src="assets/images/trophy_large.png" style="height: 15vh;"></p>
     <p class="textMedium blueText">{{scoreOverlay().playerTwo}}</p>
     <p class="textLarge">{{scoreOverlay().scorePlayerTwo}}</p>
   </div>
 
   <div class="rightGauge">
     <p [hidden]="!scoreOverlay().playOneIsWinner" class="textLarge">WINNER</p>
-    <p [hidden]="!scoreOverlay().playOneIsWinner" style="margin-bottom: 15vh;"><img src="/assets/images/trophy_large.png" style="height: 15vh;"></p>
+    <p [hidden]="!scoreOverlay().playOneIsWinner" style="margin-bottom: 15vh;"><img src="assets/images/trophy_large.png" style="height: 15vh;"></p>
     <p class="textMedium greenText">{{scoreOverlay().playerOne}}</p>
     <p class="textLarge">{{scoreOverlay().scorePlayerOne}}</p>
   </div>

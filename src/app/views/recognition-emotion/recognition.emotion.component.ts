@@ -24,9 +24,9 @@ export class RecognitionEmotionComponent extends KeyListeningComponent implement
   @ViewChild('canvas') private canvasElm: ElementRef;
 
   private readonly images = [
-    '/assets/images/emoji_happy_large.png',
-    '/assets/images/emoji_angry_large.png',
-    '/assets/images/emoji_sad_large.png'
+    'assets/images/emoji_happy_large.png',
+    'assets/images/emoji_angry_large.png',
+    'assets/images/emoji_sad_large.png'
   ];
 
   private readonly overlayTopMessages = [
