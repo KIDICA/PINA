@@ -11,7 +11,7 @@ install:
 
 script:
   - npm run lint
-  - ng build --prod --base-href /PINA/
+  - ng build --prod --base-href /
   - mv dist/PINA/index.html dist/PINA/404.html
 deploy:
   provider: pages
