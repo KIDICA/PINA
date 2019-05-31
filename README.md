@@ -8,7 +8,7 @@
     "Person Identification" or short PINA is a small web application to experiment with cloud-based person and facial recognition APIs like <a href='https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/home' target='_blank'>Azure Cognitive Services</a> or <a href='https://cloud.google.com/vision/docs/' target='_blank'> Google Cloud Vision</a>.
     <br>
     <br>
-    <a href="https://kidica.github.io/PINA" target="_blank">LIVE DEMO</a>
+    <a href="https://pia.kiondc.io" target="_blank">LIVE DEMO</a>
     <br>
     <a href="https://github.com/KIDICA/PINA/issues/new">Report bug</a>
     <br>
